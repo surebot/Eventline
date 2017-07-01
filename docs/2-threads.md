@@ -172,8 +172,10 @@ we have built in support for the `Xregexr` library which allows you to provide n
 capture groups in patterns to reference later.
 
 ```
+import Xregexr from 'xregexr'
+
 bot.on({
-    'text': /(?<age>\d+)/
+    'text': new Xregexr("(?<age>\d+)")
 })
 ```
 
