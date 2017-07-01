@@ -9,15 +9,6 @@ on the event payload followed by a series of actions to perform.
 Here is an example of this.
 
 ```
-import Bot from 'microbot'
-
-var bot = new Bot()
-```
-
-The next step is to tell the bot (name TBC) to start listening to events. Right now
-this won't do anything as we haven't declared any routing logic.
-
-```
 bot.on({
     type: 'message'
 })
