@@ -1,5 +1,5 @@
 import * as _ from 'lodash'
-import XRegExp from 'xregexp'
+import { XRegExp } from 'xregexp'
 
 function ArrayMatcher(array) {
   const matchingFunctors = array.map((pattern) => {

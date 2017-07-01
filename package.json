@@ -120,6 +120,7 @@
   "dependencies": {
     "@reactivex/rxjs": "^5.4.1",
     "@types/lodash": "^4.14.68",
+    "@types/node": "^8.0.7",
     "@types/xregexp": "^3.0.28",
     "rxjs": "^5.4.1",
     "tslib": "^1.6.0"

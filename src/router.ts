@@ -60,7 +60,6 @@ export class Router {
 
     _handleEvent(event: any) {
         var matchingThread = this._threadForEvent(event)
-        this._validateThread(matchingThread)
             
         event.pattern = matchingThread.pattern
         matchingThread.subject.next(event)
@@ -70,11 +69,5 @@ export class Router {
         return this.threads.find(thread => {
             return thread.matches(event) 
         })
-    }
-
-    _validateThread(thread: Thread) {
-        if (!thread || thread.steps.length > 0) {
-            throw "I wasn't taught to do anything else"
-        }
     }
 }
