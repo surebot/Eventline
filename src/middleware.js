@@ -4,11 +4,11 @@ class Middleware {
     }
 
     before(event) {
-
+        return event
     }
 
     after(event) {
-        
+        return event
     }
 }
 
