@@ -22,7 +22,7 @@
     "lint": "tslint --project . --type-check src/**/*.ts",
     "unit": "yarn build && yarn build:tests && nyc ava",
     "check-coverage": "nyc check-coverage --lines 100 --functions 100 --branches 100",
-    "test": "yarn lint && yarn unit && yarn check-coverage",
+    "test": "jest",
     "watch": "yarn build && yarn build:tests -- --no-browser && concurrently -r --kill-others 'npm run --silent build:main -- -w' 'npm run --silent build:tests -- -w --no-browser' 'sleepms 2000 && ava --watch'",
     "cov": "yarn unit && yarn html-coverage && opn coverage/index.html",
     "html-coverage": "nyc report --reporter=html",
@@ -54,6 +54,7 @@
     "node": ">=4.5"
   },
   "devDependencies": {
+    "@types/jest": "^20.0.2",
     "@types/node": "^8.0.4",
     "ava": "^0.20.0",
     "browserify": "^14.1.0",
@@ -62,6 +63,7 @@
     "cpx": "^1.5.0",
     "gh-pages": "^1.0.0",
     "hash.js": "^1.0.3",
+    "jest": "^20.0.4",
     "mkdirp": "^0.5.1",
     "npm-scripts-info": "^0.3.6",
     "nyc": "^11.0.3",
@@ -125,5 +127,16 @@
     "@types/xregexp": "^3.0.28",
     "rxjs": "^5.4.1",
     "tslib": "^1.6.0"
+  },
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ]
   }
 }
