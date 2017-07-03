@@ -69,6 +69,8 @@ once this action issues the `onNext` and `onComplete` methods.
 If we encountered any kind of error and wanted to stop execution of the next
 actions we would simply pass in the error via the `onError` method.
 
+If you are used to Promises or ES7's async functions, then Microbot (name TBC) also supports actions which return them and it will convert them internally to an observable. 
+
 Additionally since async actions have more control over flow of our route
 we can simply return `Rx.observable.empty()` to say that there wasn't an error
 but the route shouldn't do anything further although we don't reccomend it.

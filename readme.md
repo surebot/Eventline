@@ -42,6 +42,7 @@ rather than yet another bot framework.
 # TODO
 - Unit Test
 - Pick final name and logo
+- Add promise
 
 # Used By
 
