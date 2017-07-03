@@ -186,17 +186,17 @@ Inside of your action (convered in the next tutorial) you will pass in the event
 expression and it will return the cpature groups.
 
 ```
-import getCaptureGroups from 'microbot'
+import getRegularExpression from 'microbot'
 
 function MyAction(event) {
 
-    var textCaptureGroups = getCaptureGroups(event, 'text')
+    var regexp = getRegularExpression(event, 'text')
 
     // Regexr
-    console.log("The user said they were " + textCaptureGroups[0] + " old!")
+    console.log("The user said they were " + regexp[0] + " old!")
 
     // Xregexr
-    console.log("The user said they were " + textCaptureGroups.age + " old!")
+    console.log("The user said they were " + regexp.age + " old!")
 
     return event
 }

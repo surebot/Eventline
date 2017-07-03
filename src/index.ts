@@ -5,4 +5,4 @@
 
 export * from './middleware'
 export * from './router'
-export * from './get-capture-groups'
+export * from './get-regular-expression'

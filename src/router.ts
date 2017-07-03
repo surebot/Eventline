@@ -165,7 +165,7 @@ export class Router {
             
         if (matchingRoute) {
             event.pattern = matchingRoute.pattern
-            matchingRoute.subject.next(event)
+            matchingRoute.handle(event)
         } else {
             console.log("No matching route found")
         }
@@ -173,7 +173,10 @@ export class Router {
 
     /**
      * An internal method which finds
-     * a matching thread given an event
+     * a matching route given an event
+     * 
+     * Each route is evaluated in the
+     * order it was declared.
      * 
      * @param {*} event 
      * @returns 

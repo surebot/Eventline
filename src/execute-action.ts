@@ -6,7 +6,10 @@
 import * as Rx from 'rxjs/Rx'
 
 /**
+ * Internal method used by the middleware and routes for
+ * executing the actions.
  * 
+ * This implements the logic for handling sync and async actions.
  * 
  * @export
  * @param {(any) => any} action 
