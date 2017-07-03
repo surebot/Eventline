@@ -66,6 +66,8 @@ arrive.
 Becuase Microbot (name TBC) gurantees order, the next action will only execute
 once this action issues the `onNext` and `onComplete` methods.
 
+Make sure when sending a `onNext` event that it passes on the modified event and not some other kind of object.
+
 If we encountered any kind of error and wanted to stop execution of the next
 actions we would simply pass in the error via the `onError` method.
 
