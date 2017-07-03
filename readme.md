@@ -2,8 +2,7 @@
 
 Microbot (Name TBC) is a predictable routing framework for building chatbots or event based applications.
 
-It helps to easy build systems that respond to a stream of events in a consistent manner
-and are easy to test as well as understand.
+It helps to easy build systems that respond to a stream of events in a consistent manner and are easy to test as well as understand.
 
 Microbot (Name TBC), focuses on the Router in the ERA (Event Source, Router, Action) architecture pattern. Whilst providing a convention over configuration design to make it easier to integrate other systems.
 
@@ -11,8 +10,36 @@ You can use Microbot (Name TBC) either on it's own with custom event sources or 
 
 # Features
 
-@todo
-- Add fetures into docs
+## Convention over configuration
+
+We've optimized Microbot (Name TBC) for developer productivity
+by implmenting a declarative API which makes it easy to
+understand what your application is doing.
+
+## Easily Extendable
+
+We have a very flexible middleware and component system to
+easily extend your application with new functionality and consume
+libraries.
+
+## Modern but well supported
+
+Microbot (Name TBC) is written in Typescript to ensure
+the code is stable and robust whilst still supporting ECMAScript 5.
+
+## Async Support
+
+Microbots (Name TBC) is buit ontop of RX.js making asyncronous 
+behaviour a first class citizen without having to drop down into
+promise or callback hell.
+
+## Lightweight
+
+Microbot (Name TBC) is the Router in the ERA (Event Source, Router, Action) Architecture.
+It's a lightweight complement to your own custom code or frameworks such as a Botpress or Botkit
+rather than yet another bot framework.
+
+# TODO
 - Unit Test
 - Pick final name and logo
 
