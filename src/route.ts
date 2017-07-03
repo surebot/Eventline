@@ -4,7 +4,7 @@
  */
 
 import * as Rx from 'rxjs/Rx'
-import { executeStep } from './execute-step'
+import { executeAction } from './execute-action'
 import { matcher } from './matcher'
 
 /**
@@ -38,7 +38,7 @@ export class Route {
      * @type {Array<any>}
      * @memberof Route
      */
-    private steps: Array<any> = []
+    private actions: Array<any> = []
 
     /**
      * Creates an instance of Route.
@@ -57,7 +57,7 @@ export class Route {
      * @memberof Route
      */
     then(action: (any) => any) {
-        this.steps.push(action)
+        this.actions.push(action)
         return this
     }
 
@@ -82,9 +82,9 @@ export class Route {
     toObservable() {
         console.log('Building execution model for ' + JSON.stringify(this.pattern) + '...')
 
-        return this.steps.reduce((observer, step) => {
+        return this.actions.reduce((observer, action) => {
             return observer.flatMap(context => {
-                return executeStep(step, context)
+                return executeAction(action, context)
             })
         }, this.subject)
     }

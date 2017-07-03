@@ -9,17 +9,17 @@ import * as Rx from 'rxjs/Rx'
  * 
  * 
  * @export
- * @param {(any) => any} step 
+ * @param {(any) => any} action 
  * @param {*} event 
  * @returns 
  */
-export function executeStep(step: (any) => any, event: any) {
-    let result = step(event)
+export function executeAction(action: (any) => any, event: any) {
+    let result = action(event)
 
     if (result instanceof Rx.Observable) {
         return result;
     } else if (result instanceof Function) {
-        return executeStep(result, event);
+        return executeAction(result, event);
     } else {
         return Rx.Observable.of(result)
     }

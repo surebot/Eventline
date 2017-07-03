@@ -6,7 +6,7 @@
 import * as Rx from 'rxjs/Rx'
 import { Middleware } from './middleware'
 import { Route } from './route'
-import { executeStep } from './execute-step'
+import { executeAction } from './execute-action'
 
 /**
  * 
@@ -123,7 +123,7 @@ export class Router {
         return this.middlewares.reduce((currentObservable: Rx.Subject<any>, middleware: Middleware) => {
 
             var observable = currentObservable.flatMap(event => {
-                return executeStep(middleware[type], event)
+                return executeAction(middleware[type], event)
             })
 
             return observable
