@@ -11,7 +11,10 @@ You can use Microbot (Name TBC) either on it's own with custom event sources or 
 
 # Features
 
-TBC
+@todo
+- Add fetures into docs
+- Finish API documentation
+- Unit Test
 
 # Used By
 
