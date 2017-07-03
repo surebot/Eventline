@@ -9,7 +9,8 @@ import { Route } from './route'
 import { executeAction } from './execute-action'
 
 /**
- * 
+ * This class is in charge of coordinating events from an event source
+ * and turning them into actions to be executed based on routes.
  * 
  * @export
  * @class Router
@@ -17,7 +18,8 @@ import { executeAction } from './execute-action'
 export class Router {
 
     /**
-     * 
+     * This subject is used internally to initiate the
+     * execution of middleware used before a route's actions
      * 
      * @private
      * @type {Rx.Subject<object>}
@@ -26,7 +28,8 @@ export class Router {
     private beforeMiddlewareSubject: Rx.Subject<object> = new Rx.Subject<any>()
 
     /**
-     * 
+     * This subject is used internally to initiate the
+     * execution of middleware used after a route's actions
      * 
      * @private
      * @type {Rx.Subject<object>}
@@ -35,7 +38,8 @@ export class Router {
     private afterMiddlewareSubject: Rx.Subject<object> = new Rx.Subject<any>()
 
     /**
-     * 
+     * An internal array used to hold all of the
+     * registered middleware for this router
      * 
      * @private
      * @type {Array<Middleware>}
@@ -44,7 +48,8 @@ export class Router {
     private middlewares: Array<Middleware> = []
 
     /**
-     * 
+     * An internal array used to hold all of the
+     * registered routes for this router
      * 
      * @private
      * @type {Array<Route>}
@@ -53,7 +58,7 @@ export class Router {
     private routes: Array<Route> = []
 
     /**
-     * 
+     * Passes an event for the router to route
      * 
      * @param {object} event 
      * @memberof Router
@@ -64,7 +69,7 @@ export class Router {
     }
 
     /**
-     * 
+     * Passes a component for the router to consume
      * 
      * @param {(Router) => void} component 
      * @memberof Router
@@ -74,7 +79,8 @@ export class Router {
     }
 
     /**
-     * 
+     * Registers middleware with
+     * the router
      * 
      * @param {Middleware} middleware 
      * @memberof Router
@@ -84,7 +90,7 @@ export class Router {
     }
 
     /**
-     * 
+     * Registers a route for the router
      * 
      * @param {*} pattern 
      * @returns 
@@ -99,7 +105,8 @@ export class Router {
     }
 
     /**
-     * 
+     * Initiates the router and builds the routes
+     * for the runtime
      * 
      * @memberof Router
      */
@@ -111,7 +118,8 @@ export class Router {
     }
 
     /**
-     * 
+     * An internal method for bulding a middleware execution
+     * flow for the runtime
      * 
      * @param {string} type 
      * @param {Rx.Subject<any>} subject 
@@ -132,7 +140,8 @@ export class Router {
     }
 
     /**
-     * 
+     * An internal method for bulding a route execution
+     * flow for the runtime
      * 
      * @param {Route} route 
      * @memberof Router
@@ -145,7 +154,8 @@ export class Router {
     }
 
     /**
-     * 
+     * An internal method for taking an event
+     * finding a matching router and triggering it.
      * 
      * @param {*} event 
      * @memberof Router
@@ -162,7 +172,8 @@ export class Router {
     }
 
     /**
-     * 
+     * An internal method which finds
+     * a matching thread given an event
      * 
      * @param {*} event 
      * @returns 
