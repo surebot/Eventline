@@ -15,6 +15,7 @@ You can use Microbot (Name TBC) either on it's own with custom event sources or 
 - Add fetures into docs
 - Finish API documentation
 - Unit Test
+- Pick final name and logo
 
 # Used By
 
