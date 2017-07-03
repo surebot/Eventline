@@ -1,6 +1,19 @@
+/**
+ * Microbot
+ * Copyright James Campbell 2017
+ */
+
 import * as _ from 'lodash'
 import { XRegExp } from 'xregexp'
 
+/**
+ * 
+ * 
+ * @export
+ * @param {*} event 
+ * @param {string} path 
+ * @returns 
+ */
 export function getCaptureGroups(event: any, path: string) {
     let patternContainer = [event.pattern]
     let patterns = patternContainer.reduce((a, b) => a.concat(b), []);

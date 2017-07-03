@@ -1,6 +1,17 @@
+/**
+ * Microbot
+ * Copyright James Campbell 2017
+ */
+
 import * as _ from 'lodash'
 import { XRegExp } from 'xregexp'
 
+/**
+ * 
+ * 
+ * @param {any} array 
+ * @returns 
+ */
 function ArrayMatcher(array) {
   const matchingFunctors = array.map((pattern) => {
     return matcher(pattern)
@@ -20,12 +31,24 @@ function ArrayMatcher(array) {
   };
 }
 
+/**
+ * 
+ * 
+ * @param {any} value 
+ * @returns 
+ */
 function EqualityMatcher(value) {
   return context => {
     return context === value
   }
 }
 
+/**
+ * 
+ * 
+ * @param {any} pattern 
+ * @returns 
+ */
 function ObjectMatcher(pattern) {
 
   return (context) => {
@@ -47,6 +70,12 @@ function ObjectMatcher(pattern) {
   }
 }
 
+/**
+ * 
+ * 
+ * @param {any} regexp 
+ * @returns 
+ */
 function RegExpMatcher(regexp) {
   return context => {
     var is_valid_value = context !== undefined && context !== null
@@ -54,6 +83,13 @@ function RegExpMatcher(regexp) {
   }
 }
 
+/**
+ * 
+ * 
+ * @export
+ * @param {any} pattern 
+ * @returns 
+ */
 export function matcher(pattern) {
 
     if (pattern instanceof Array) {
