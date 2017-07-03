@@ -1,7 +1,7 @@
 # Middleware
 
 Middleware is a way of making sure certain actions are always performed
-before or after any of the actions for a paticular thread.
+before or after any of the actions for a paticular route.
 
 This can be useful for always sending read recipts for message or loading and
 saving contextual infomation into a database.
@@ -32,13 +32,12 @@ class ContextMiddleware extends Middleware {
     }
 }
 
-bot.registerMiddleware(new ContextMiddleware())
+router.registerMiddleware(new ContextMiddleware())
 ```
 
-The above context middleware will load the context before executing the actions for a thread and will save it after excuting all of the actions for a thread.
+The above context middleware will load the context before executing the actions for a route and will save it after excuting all of the actions for a route.
 
 The before and after methods behave exactly like actions so if you know how to write
 actions you know how to write middleware.
 
-Middleware like threads will be executed in the order they are registered in both before
-and after.
+Middleware like routes will be executed in the order they are registered.

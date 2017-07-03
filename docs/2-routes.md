@@ -109,7 +109,7 @@ function TextIsTooShort(event) {
     return event.text && event.text.length < 5
 }
 
-bot.on(TextIsTooShort)
+router.on(TextIsTooShort)
 ```
 
 When TextIsTooShort returns true the route is triggered. In this example the function
@@ -123,7 +123,7 @@ function TextIsTooShort(text) {
     return text && text.length < 5
 }
 
-bot.on({
+router.on({
     "text": TextIsTooShort
 })
 ```
@@ -142,7 +142,7 @@ of a key is equal then it will match. We support or javascript types
 that can be compared using the equality operator.
 
 ```
-bot.on({
+router.on({
     "text": "I should be equal"
 })
 ```
@@ -155,7 +155,7 @@ For more complex value based matching we support regular expressions in addition
 to functions.
 
 ```
-bot.on({
+router.on({
     'text': /\d+/
 })
 ```
@@ -170,7 +170,7 @@ capture groups in patterns to reference later.
 ```
 import Xregexr from 'xregexr'
 
-bot.on({
+router.on({
     'text': new Xregexr("(?<age>\d+)")
 })
 ```

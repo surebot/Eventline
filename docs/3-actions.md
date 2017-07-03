@@ -1,14 +1,14 @@
 # Actions
 
 By now you will be wondering what these actions are we refer to are. They
-are small tasks performed when a thread is triggered.
+are small tasks performed when a route is triggered.
 
 They are always triggered sequentially and in-order. Each action will be
 called until either there are no-more actions to be done or one of the
 actions triggers an error.
 
 ```
-bot.on({
+router.on({
     type: 'message'
 })
 .then(Step1)
@@ -32,7 +32,7 @@ In this action we reverse the text so "hey" becomes "yeh". The next action
 will see the modified text. 
 
 This system allows actions to modify, filter or add content to an event
-a bot (name TBC) receives.
+a router receives.
 
 ## Asyncronous Actions
 
@@ -69,6 +69,6 @@ once this action issues the `onNext` and `onComplete` methods.
 If we encountered any kind of error and wanted to stop execution of the next
 actions we would simply pass in the error via the `onError` method.
 
-Additionally since async actions have more control over flow of our bot (name TBC)
+Additionally since async actions have more control over flow of our route
 we can simply return `Rx.observable.empty()` to say that there wasn't an error
-but the bot shouldn't do anything either although we don't reccomend it.
+but the route shouldn't do anything further although we don't reccomend it.
