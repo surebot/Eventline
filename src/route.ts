@@ -2,11 +2,11 @@ import * as Rx from 'rxjs/Rx'
 import { executeStep } from './execute-step'
 import { matcher } from './matcher'
 
-export class Thread {
+export class Route {
 
     private steps: Array<any> = []
-    private pattern: any
-    private subject: Rx.Subject<any> = new Rx.Subject<any>()
+    public pattern: any
+    public subject: Rx.Subject<any> = new Rx.Subject<any>()
 
     constructor(pattern: any) {
         this.pattern = pattern

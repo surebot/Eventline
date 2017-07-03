@@ -1,18 +1,18 @@
 import * as Rx from 'rxjs/Rx'
 import { Middleware } from './middleware'
-import { Thread } from './thread'
+import { Route } from './route'
 import { executeStep } from './execute-step'
 
 export class Router {
 
     private beforeMiddlewareSubject: Rx.Subject<object> = new Rx.Subject<any>()
     private afterMiddlewareSubject: Rx.Subject<object> = new Rx.Subject<any>()
-    private middlewares: Array<any> = []
-    private threads: Array<any> = []
+    private middlewares: Array<Middleware> = []
+    private routes: Array<Route> = []
 
-    emit(context: object) {
-        console.log('Bot Recieved: ' + JSON.stringify(context))
-        this.beforeMiddlewareSubject.next(context)
+    route(event: object) {
+        console.log('Router Recieved: ' + JSON.stringify(event))
+        this.beforeMiddlewareSubject.next(event)
     }
 
     use(component: (Router) => void) {
@@ -24,23 +24,23 @@ export class Router {
     }
 
     on(pattern: any) {
-        console.log('Bot Registered Thread: ' + JSON.stringify(pattern))
+        console.log('Router Registered Route: ' + JSON.stringify(pattern))
 
-        var thread = new Thread(pattern)
-        this.threads.push(thread)
-        return thread
+        var route = new Route(pattern)
+        this.routes.push(route)
+        return route
     }
 
-    listen() {
-        this.threads.forEach(this._listenToThread, this)
+    start() {
+        this.routes.forEach(this._listenToRoute, this)
 
         this._buildMiddlewareChain("before", this.beforeMiddlewareSubject)
         .subscribe(this._handleEvent)
     }
 
-    _buildMiddlewareChain(type: string, subject: Rx.Subject<any>) {
+    _buildMiddlewareChain(type: string, subject: Rx.Subject<any>): Rx.Observable<any> {
 
-        return this.middlewares.reduce((currentObservable, middleware) => {
+        return this.middlewares.reduce((currentObservable: Rx.Subject<any>, middleware: Middleware) => {
 
             var observable = currentObservable.flatMap(event => {
                 return executeStep(middleware[type], event)
@@ -51,23 +51,27 @@ export class Router {
         }, subject)
     }
 
-    _listenToThread(thread: Thread) {
-        this._buildMiddlewareChain("after", thread.toObservable())
+    _listenToRoute(route: Route) {
+        this._buildMiddlewareChain("after", route.toObservable())
         .subscribe((event) => {
             this.afterMiddlewareSubject.next(event)
         })
     }
 
     _handleEvent(event: any) {
-        var matchingThread = this._threadForEvent(event)
+        var matchingRoute = this._routeForEvent(event)
             
-        event.pattern = matchingThread.pattern
-        matchingThread.subject.next(event)
+        if (matchingRoute) {
+            event.pattern = matchingRoute.pattern
+            matchingRoute.subject.next(event)
+        } else {
+            console.log("No matching route found")
+        }
     }
 
-    _threadForEvent(event: any) {
-        return this.threads.find(thread => {
-            return thread.matches(event) 
+    _routeForEvent(event: any) {
+        return this.routes.find(route => {
+            return route.matches(event) 
         })
     }
 }

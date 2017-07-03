@@ -1,39 +1,35 @@
-# Threads
+# Routes
 
-As previously mentioned the bot (name TBC) hasn't been given any routes to
-follow.
+As previously mentioned the route hasn't been given any routes to follow. Routes are simply a pattern to match on the event payload followed by a series of actions to perform.
 
-We do this using the concept of threads. Threads are simply a pattern to match
-on the event payload followed by a series of actions to perform.
-
-Here is an example of this.
+Without this nothing will happen. Here is an example of how to declare routes.
 
 ```
-bot.on({
+router.on({
     type: 'message'
 })
 .then(DoSomething)
 
-bot.listen()
+router.start()
 ```
 
 When we get an event with a key of `type` set to the value of `message` then this
-thread will trigger the `DoSomething` action.
+route will trigger the `DoSomething` action.
 
 We will cover actions in the next tutorial.
 
-When declaring threads these should always occur before the `listen` method as
+When declaring routes these should always occur before the `start` method as
 this is what builds them ready to be executed at run time.
 
-The priority of each thread is determined in the order in which you declare them, ones
+The priority of each route is determined in the order in which you declare them, ones
 defined earlier in your code will be checked first to see if the event matches the
 specified pattern before moving onto the next one.
 
 ## Patterns
 
-The pattern for a thread determines what should match in the payload for an event before
-that thread can be ran. Below we outline the supported forms and techniques for creating
-patterns for your threads.
+The pattern for a route determines what should match in the payload for an event before
+that route can be ran. Below we outline the supported forms and techniques for creating
+patterns for your routes.
 
 There are two kinds of matchers for patterns:
 
@@ -42,7 +38,7 @@ There are two kinds of matchers for patterns:
 
 ### Object
 
-You will use this the most often, this will only allow a thread to be
+You will use this the most often, this will only allow a route to be
 triggered if each key path specifies matches the value of the same key
 path in the payload of the event.
 
@@ -81,7 +77,7 @@ The pattern above for example could be re-phrased as:
 
 ### Array
 
-When using array in your pattern, a thread will only be triggered if all
+When using array in your pattern, a route will only be triggered if all
 conditions within that array match.
 
 ```
@@ -99,7 +95,7 @@ This pattern above only matches events with a payload that have a key called `ty
 with the value `message` and that have a key called `sender` which in turn has a key called `id` with the value `1`.
 
 We could have esily done this purley with an object based pattern but using arrays
-allows us to easily compose patterns for a thread from multiple indvidual ones.
+allows us to easily compose patterns for a route from multiple indvidual ones.
 
 i.e "When we recieve a message containing a location from sender with an id of 1"
 
@@ -116,7 +112,7 @@ function TextIsTooShort(event) {
 bot.on(TextIsTooShort)
 ```
 
-When TextIsTooShort returns true the thread is triggered. In this example the function
+When TextIsTooShort returns true the route is triggered. In this example the function
 is passed the event to match, it checks if the event has a key called `text` which has
 a string shorter than 5 characters.
 
@@ -134,10 +130,10 @@ bot.on({
 
 Now this function is passed in as a `value` based matcher, it will be given the
 value to match and if it returns true then all of the keys for the object 
-will match and the thread will be triggered.
+will match and the route will be triggered.
 
 Functions can also be passed into arrays and as mentioned before as long as it
-and the other patterns in that array match then the thread will be triggered.
+and the other patterns in that array match then the route will be triggered.
 
 ### Value
 
