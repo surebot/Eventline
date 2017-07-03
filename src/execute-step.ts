@@ -19,7 +19,7 @@ export function executeStep(step: (any) => any, event: any) {
     if (result instanceof Rx.Observable) {
         return result;
     } else if (result instanceof Function) {
-        return this._executeStep(result, event);
+        return executeStep(result, event);
     } else {
         return Rx.Observable.of(result)
     }
