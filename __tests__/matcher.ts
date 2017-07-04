@@ -173,18 +173,90 @@ test('If object does not match function then result should be false', () => {
   expect(result).toBe(false);
 });
 
-// Array -> Object
-// Array -> Function
-
-test('If function returns true then result should be true', () => {
-  let pattern = (event) => {
-    return true
+test('If array matches object then result should be true', () => {
+  let pattern = [{
+    'text': 'hello'
+  }]
+  let event = {
+    'text': 'hello'
   }
-  let event = {}
   let functor = matcher(pattern)
   let result = functor(event)
 
   expect(result).toBe(true);
+});
+
+test('If array does not match object then result should be false', () => {
+  let pattern = [{
+    'text': 'goodbye'
+  }]
+  let event = {
+    'text': 'hello'
+  }
+  let functor = matcher(pattern)
+  let result = functor(event)
+
+  expect(result).toBe(false);
+});
+
+test('If array matches function then result should be true', () => {
+  let pattern = [(event) => {
+    return true
+  }]
+  let event = {
+    'text': 'hello'
+  }
+  let functor = matcher(pattern)
+  let result = functor(event)
+
+  expect(result).toBe(true);
+});
+
+test('If array does not match function then result should be false', () => {
+  let pattern = [(event) => {
+    return false
+  }]
+  let event = {
+    'text': 'hello'
+  }
+  let functor = matcher(pattern)
+  let result = functor(event)
+
+  expect(result).toBe(false);
+});
+
+test('If array matches all elements then result should be true', () => {
+  let pattern = [
+  (event) => {
+    return true
+  },  
+  (event) => {
+    return true
+  }]
+  let event = {
+    'text': 'hello'
+  }
+  let functor = matcher(pattern)
+  let result = functor(event)
+
+  expect(result).toBe(true);
+});
+
+test('If array does not match all elements then result should be false', () => {
+  let pattern = [
+  (event) => {
+    return true
+  },  
+  (event) => {
+    return false
+  }]
+  let event = {
+    'text': 'hello'
+  }
+  let functor = matcher(pattern)
+  let result = functor(event)
+
+  expect(result).toBe(false);
 });
 
 test('If function returns false then result should be false', () => {
