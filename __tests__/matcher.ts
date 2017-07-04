@@ -143,10 +143,37 @@ test('If object does not match xregexp then result should be false', () => {
   expect(result).toBe(false);
 });
 
-// Object -> Array
-// Object -> Function
+test('If object matches function then result should be true', () => {
+  let pattern = {
+    'text': (value) => {
+      return true
+    }
+  }
+  let event = {
+    'text': 'hello'
+  }
+  let functor = matcher(pattern)
+  let result = functor(event)
+
+  expect(result).toBe(true);
+});
+
+test('If object does not match function then result should be false', () => {
+  let pattern = {
+    'text': (value) => {
+      return false
+    }
+  }
+  let event = {
+    'text': 'hello'
+  }
+  let functor = matcher(pattern)
+  let result = functor(event)
+
+  expect(result).toBe(false);
+});
+
 // Array -> Object
-// Array -> Array
 // Array -> Function
 
 test('If function returns true then result should be true', () => {
