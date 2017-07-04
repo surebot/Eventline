@@ -168,10 +168,10 @@ we have built in support for the `Xregexr` library which allows you to provide n
 capture groups in patterns to reference later.
 
 ```
-import Xregexr from 'xregexr'
+import * as XRegExp from 'xregexp'
 
 router.on({
-    'text': new Xregexr("(?<age>\d+)")
+    'text': new XRegExp("(?<age>\\d+)")
 })
 ```
 
@@ -186,17 +186,17 @@ Inside of your action (convered in the next tutorial) you will pass in the event
 expression and it will return the cpature groups.
 
 ```
-import getRegularExpression from 'microbot'
+import getCaptureGroups from 'microbot'
 
 function MyAction(event) {
 
-    var regexp = getRegularExpression(event, 'text')
+    var groups = getCaptureGroups(event, 'text')
 
     // Regexr
-    console.log("The user said they were " + regexp[0] + " old!")
+    console.log("The user said they were " + groups[0] + " old!")
 
     // Xregexr
-    console.log("The user said they were " + regexp.age + " old!")
+    console.log("The user said they were " + groups.age + " old!")
 
     return event
 }

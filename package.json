@@ -126,7 +126,8 @@
     "@types/node": "^8.0.7",
     "@types/xregexp": "^3.0.28",
     "rxjs": "^5.4.1",
-    "tslib": "^1.6.0"
+    "tslib": "^1.6.0",
+    "xregexp": "^3.2.0"
   },
   "jest": {
     "transform": {

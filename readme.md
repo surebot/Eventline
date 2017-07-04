@@ -39,10 +39,16 @@ Microbot (Name TBC) is the Router in the ERA (Event Source, Router, Action) Arch
 It's a lightweight complement to your own custom code or frameworks such as a Botpress or Botkit
 rather than yet another bot framework.
 
+## Stateless
+
+Everything is built to promote a stateless architecture, each action and middleware built
+around fuctional programming; taking an event and returning it to be given to the next step.
+
+This makes it easier to reason about whats happening within your application.
+
 # TODO
 - Unit Test
 - Pick final name and logo
-- Add promise
 
 # Used By
 
