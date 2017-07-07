@@ -114,7 +114,7 @@ export class Router {
         this.routes.forEach(this._listenToRoute, this)
 
         this._buildMiddlewareChain("before", this.beforeMiddlewareSubject)
-        .subscribe(this._handleEvent)
+        .subscribe(this._handleEvent.bind(this))
     }
 
     /**
@@ -131,7 +131,7 @@ export class Router {
         return this.middlewares.reduce((currentObservable: Rx.Subject<any>, middleware: Middleware) => {
 
             var observable = currentObservable.flatMap(event => {
-                return executeAction(middleware[type], event)
+                return executeAction(middleware[type].bind(middleware), event)
             })
 
             return observable

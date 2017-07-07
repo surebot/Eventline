@@ -21,7 +21,7 @@ export interface Middleware {
      * @returns 
      * @memberof Middleware
      */
-    before(event: any)
+    before(event: any): any
 
     /**
      * This method is called with the event recieved by the
@@ -31,5 +31,5 @@ export interface Middleware {
      * @returns 
      * @memberof Middleware
      */
-    after(event: any)
+    after(event: any): any
 }
