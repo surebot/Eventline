@@ -18,16 +18,21 @@ import * as XRegExp from 'xregexp'
  * @returns 
  */
 export function getCaptureGroups(event: any, path: string) {
-    let patternContainer = [event.pattern]
-    let patterns = patternContainer.reduce((a, b) => a.concat(b), []);
+    let patterns = [event.pattern].reduce((a, b) => a.concat(b), []);
+    let value: any = _.get(event, path, null)
 
-    let regexp = patterns.map(pattern => {
-        return _.get(pattern, path, pattern[path])
+    let regexps = patterns.map(pattern => {
+        return [_.get(pattern, path, pattern[path])]
+        .reduce((a, b) => a.concat(b), []);
     })
     .find(pattern => {
         return pattern !== undefined
     })
 
-    let value: any = _.get(event, path, null)
-    return XRegExp.exec(value, regexp)
+    return regexps.map(regexp => {
+        return XRegExp.exec(value, regexp)
+    })
+    .find(result => {
+        return result !== null
+    })
 }
