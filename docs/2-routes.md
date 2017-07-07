@@ -252,3 +252,5 @@ function MyAction(event) {
 }
 ```
 
+For keypaths with multiple regular expressions, this function will use the first one that matches
+to extract the capture groups.
