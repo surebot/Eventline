@@ -14,11 +14,12 @@ import { XRegExp } from 'xregexp'
  * in order of this matcher to match.
  * 
  * @param {any} array 
+ * @param {boolean} topLevel
  * @returns 
  */
-function ArrayMatcher(array) {
+function ArrayMatcher(array, topLevel=true) {
   const matchingFunctors = array.map((pattern) => {
-    return matcher(pattern)
+    return matcher(pattern, topLevel)
   });
 
   return (event) => {
@@ -31,7 +32,12 @@ function ArrayMatcher(array) {
       return !notMatch
     })
 
-    return (matches.length === array.length)
+    if (topLevel) {
+      return (matches.length === array.length)
+    } else {
+      return (matches.length > 0)
+    }
+    
   };
 }
 
@@ -67,7 +73,7 @@ function ObjectMatcher(pattern) {
     const pairs = _.toPairs(pattern)
 
     const results = pairs.map(([key, pattern]) => {
-      const matcherFunctor = matcher(pattern)
+      const matcherFunctor = matcher(pattern, false)
       const eventValue = _.get(event, key, null)
       return [key, matcherFunctor(eventValue)]
     });
@@ -106,12 +112,13 @@ function RegExpMatcher(regexp) {
  * matching logic based on the type of pattern.
  * 
  * @param {any} pattern 
+ * @param {boolean} topLevel
  * @returns 
  */
-export function matcher(pattern) {
+export function matcher(pattern, topLevel=true) {
 
     if (pattern instanceof Array) {
-      return ArrayMatcher(pattern);
+      return ArrayMatcher(pattern, topLevel);
     } else if (pattern instanceof RegExp) {
       return RegExpMatcher(pattern);
     } else if (pattern instanceof Function) {

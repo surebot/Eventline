@@ -173,6 +173,48 @@ test('If object does not match function then result should be false', () => {
   expect(result).toBe(false);
 });
 
+test('If object keypath matches at least one value in array then result should be true', () => {
+  let pattern = {
+    'text': ['hello', 'bye']
+  }
+  let event = {
+    'text': 'hello'
+  }
+  let functor = matcher(pattern)
+  let result = functor(event)
+  expect(result).toBe(true);
+
+  event = {
+    'text': 'bye'
+  }
+  result = functor(event)
+  expect(result).toBe(true);
+});
+
+test('object keypath should flatten values in array pattern then result should be true', () => {
+  let pattern = {
+    'text': [['hello', 'bye'], 'hotdogs']
+  }
+  let event = {
+    'text': 'hello'
+  }
+  let functor = matcher(pattern)
+  let result = functor(event)
+  expect(result).toBe(true);
+
+  event = {
+    'text': 'bye'
+  }
+  result = functor(event)
+  expect(result).toBe(true);
+
+  event = {
+    'text': 'hotdogs'
+  }
+  result = functor(event)
+  expect(result).toBe(true);
+});
+
 test('If array matches object then result should be true', () => {
   let pattern = [{
     'text': 'hello'
@@ -257,6 +299,20 @@ test('If array does not match all elements then result should be false', () => {
   let result = functor(event)
 
   expect(result).toBe(false);
+});
+
+test('array should flatten first sub-array of patterns', () => {
+  let functionPattern = (event) => {
+    return true
+  }
+  let pattern = [[functionPattern, functionPattern], functionPattern]
+  let event = {
+    'text': 'hello'
+  }
+  let functor = matcher(pattern)
+  let result = functor(event)
+
+  expect(result).toBe(true);
 });
 
 test('If function returns false then result should be false', () => {
