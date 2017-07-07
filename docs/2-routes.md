@@ -77,6 +77,8 @@ The pattern above for example could be re-phrased as:
 
 ### Array
 
+#### Flat Arrays
+
 When using array in your pattern, a route will only be triggered if all
 conditions within that array match.
 
@@ -98,6 +100,54 @@ We could have esily done this purley with an object based pattern but using arra
 allows us to easily compose patterns for a route from multiple indvidual ones.
 
 i.e "When we recieve a message containing a location from sender with an id of 1"
+
+#### Nested Arrays
+
+When handling an array pattern, microbot (name TBC) flattens it to be handled like any other pattern.
+This allows you to compose arrays of patterns easily.
+
+For example we could store and array of patterns for finding a image message in a constant.
+
+```
+const IsLocationMessagePattern = [HasAttachment, HasImage]
+```
+
+Then lets say we want to have a special route that only is triggered when there is more than one
+image attachment we can simpliy declare a route like so.
+
+```
+router.on([IsLocationMessagePattern, HasMoreThanOneAttachment])
+```
+
+This pattern is flattened to match messages with more than one image attachment.
+
+#### Value Arrays
+
+When an array is used to match the value of a object then it behaves slightly differently.
+Instead of all memebers of the array having to match, only on of them has to match.
+
+This means you can do something like this.
+
+```
+router.on({
+    'message.text': ['hey', 'hello']
+})
+```
+
+And it will match messages with text that says "hey" or "hello". Again you can nest arrays
+and microbot (name TBC) will flatten them.
+
+So this allows us to also do this.
+
+```
+let YesUtterances = ['yes', 'yup']
+
+router.on({
+    'message.text': [YesUtterances, 'hello']
+})
+```
+
+And it will match messages with text that says "yes", "yup", or "hello".
 
 ### Function
 
