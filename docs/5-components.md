@@ -59,4 +59,4 @@ router.on({
 on(DoSomething)
 ```
 
-We also recommend components as a great way of packaing functionality when creating libraries for Microbot (name TBC).
+We also recommend components as a great way of packaing functionality when creating libraries for Eventline.

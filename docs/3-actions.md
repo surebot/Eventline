@@ -36,10 +36,10 @@ a router receives.
 
 ## Asyncronous Actions
 
-Eventually your bot (name TBC) will need to do something in the background such as
+Eventually your bot will need to do something in the background such as
 access a database or make an api call. This requires a asyncronous action.
 
-Microbot (name TBC) is built ontop of Rx.js. For those not familiar with this, Rx
+Eventline is built ontop of Rx.js. For those not familiar with this, Rx
 allows you to compose async events in a way that allows you to trigger tasks after
 another async task completes and pass the results of that action between them.
 
@@ -60,10 +60,10 @@ function DoSomethingAsync(event) {
 
 In the example above, the action waits 1 second before passing the event
 onto onto the next action. Since this is built using observables this should
-be non-blocking. Allowing your bot (name TBC) to handle other events that may
+be non-blocking. Allowing your bot to handle other events that may
 arrive.
 
-Becuase Microbot (name TBC) gurantees order, the next action will only execute
+Becuase Eventline gurantees order, the next action will only execute
 once this action issues the `onNext` and `onComplete` methods.
 
 Make sure when sending a `onNext` event that it passes on the modified event and not some other kind of object.
@@ -71,7 +71,7 @@ Make sure when sending a `onNext` event that it passes on the modified event and
 If we encountered any kind of error and wanted to stop execution of the next
 actions we would simply pass in the error via the `onError` method.
 
-If you are used to Promises or ES7's async functions, then Microbot (name TBC) also supports actions which return them and it will convert them internally to an observable. 
+If you are used to Promises or ES7's async functions, then Eventline also supports actions which return them and it will convert them internally to an observable. 
 
 Additionally since async actions have more control over flow of our route
 we can simply return `Rx.observable.empty()` to say that there wasn't an error

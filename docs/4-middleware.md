@@ -7,7 +7,7 @@ This can be useful for always sending read recipts for message or loading and
 saving contextual infomation into a database.
 
 ```
-import Middleware from 'microbot'
+import Middleware from 'eventline'
 
 class ContextMiddleware extends Middleware {
 

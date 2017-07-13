@@ -1,10 +1,10 @@
 # The Router
 
-To start using Microbot (name TBC), you first have to import the framework
+To start using Eventline, you first have to import the framework
 and create a router.
 
 ```
-import Router from 'microbot'
+import Router from 'eventline'
 
 let router = new Router()
 ```
@@ -13,7 +13,7 @@ The next step is to tell the router to start. Right now
 this won't do anything as we haven't declared any routing logic.
 
 ```
-import Router from 'microbot'
+import Router from 'eventline'
 
 var router = new Router()
 router.start()
@@ -22,7 +22,7 @@ router.start()
 In order for the router to route events it need to be provided with them. We do this via the `route` method. This is the method that will be called by your event source to pass an event to the router.
 
 ```
-import Router from 'microbot'
+import Router from 'eventline'
 
 var router = new Router()
 

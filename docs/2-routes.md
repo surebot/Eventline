@@ -51,7 +51,7 @@ path in the payload of the event.
 For example the above matches events with a payload that have a key called `type`
 with the value `message`.
 
-Microbot (name TBC), also supports deep-level keys when it comes to objects:
+Eventline, also supports deep-level keys when it comes to objects:
 
 ```
 {
@@ -103,7 +103,7 @@ i.e "When we recieve a message containing a location from sender with an id of 1
 
 #### Nested Arrays
 
-When handling an array pattern, microbot (name TBC) flattens it to be handled like any other pattern.
+When handling an array pattern, eventline flattens it to be handled like any other pattern.
 This allows you to compose arrays of patterns easily.
 
 For example we could store and array of patterns for finding a image message in a constant.
@@ -135,7 +135,7 @@ router.on({
 ```
 
 And it will match messages with text that says "hey" or "hello". Again you can nest arrays
-and microbot (name TBC) will flatten them.
+and eventline will flatten them.
 
 So this allows us to also do this.
 
@@ -236,7 +236,7 @@ Inside of your action (convered in the next tutorial) you will pass in the event
 expression and it will return the cpature groups.
 
 ```
-import getCaptureGroups from 'microbot'
+import getCaptureGroups from 'eventline'
 
 function MyAction(event) {
 
