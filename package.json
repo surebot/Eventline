@@ -1,6 +1,6 @@
 {
   "name": "eventline",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Micro-framework for routing events for chatbots and applications",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
@@ -11,44 +11,13 @@
   "license": "ISC",
   "scripts": {
     "info": "npm-scripts-info",
-    "build": "trash build && yarn build:main && yarn build:module && yarn build:browser-deps && yarn build:browser && yarn build:browser-cjs && yarn build:resolve-sourcemaps",
-    "build:main": "tsc -p tsconfig.json",
-    "build:module": "tsc -p config/exports/tsconfig.module.json",
-    "build:browser-deps": "mkdirp build/temp && browserify node_modules/hash.js/lib/hash.js --standalone hash -o build/temp/hash.js",
-    "build:browser": "rollup -c config/exports/rollup.config.js -f es -o build/browser/index.js",
-    "build:browser-cjs": "rollup -c config/exports/rollup.config.js -f cjs -o build/browser/index.cjs.js",
-    "build:resolve-sourcemaps": "sorcery -i build/browser/index.js && sorcery -i build/browser/index.cjs.js",
-    "build:tests": "trash test && node config/exports/build-tests.js",
-    "lint": "tslint --project . --type-check src/**/*.ts",
-    "unit": "yarn build && yarn build:tests && nyc ava",
-    "check-coverage": "nyc check-coverage --lines 100 --functions 100 --branches 100",
-    "test": "jest",
-    "watch": "yarn build && yarn build:tests -- --no-browser && concurrently -r --kill-others 'npm run --silent build:main -- -w' 'npm run --silent build:tests -- -w --no-browser' 'sleepms 2000 && ava --watch'",
-    "cov": "yarn unit && yarn html-coverage && opn coverage/index.html",
-    "html-coverage": "nyc report --reporter=html",
-    "send-coverage": "nyc report --reporter=lcov > coverage.lcov && codecov",
-    "docs": "yarn docs:html && opn build/docs/index.html",
-    "docs:html": "typedoc src/index.ts --excludePrivate --mode file --theme minimal --out build/docs",
-    "docs:json": "typedoc --mode file --json build/docs/typedoc.json src/index.ts",
-    "docs:publish": "yarn docs:html && gh-pages -d build/docs",
-    "changelog": "standard-version",
-    "release": "yarn reset && yarn test && yarn docs:publish && yarn changelog",
-    "reset": "git clean -dfx && git reset --hard && yarn"
+    "build": "tsc -p tsconfig.json",
+    "test": "jest"
   },
   "scripts-info": {
     "info": "Display information about the scripts",
     "build": "(Trash and re)build the library",
-    "lint": "Lint all typescript source files",
-    "unit": "Build the library and run unit tests",
-    "test": "Lint, build, and test the library",
-    "watch": "Watch source files, rebuild library on changes, rerun relevant tests",
-    "cov": "Run tests, generate the HTML coverage report, and open it in a browser",
-    "docs": "Generate HTML API documentation and open it in a browser",
-    "docs:publish": "Generate HTML API documentation and push it to GitHub Pages",
-    "docs:json": "Generate API documentation in typedoc JSON format",
-    "changelog": "Bump package.json version, update CHANGELOG.md, tag a release",
-    "reset": "Delete all untracked files and reset the repo to the last commit",
-    "release": "Clean, build, test, publish docs, and prepare release (a one-step publish process)"
+    "test": "Lint, build, and test the library"
   },
   "engines": {
     "node": ">=4.5"
