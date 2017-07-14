@@ -6,7 +6,7 @@
   "typings": "build/main/index.d.ts",
   "module": "build/module/index.js",
   "browser": "build/browser/index.js",
-  "repository": "https://github.com/bitjson/typescript-starter",
+  "repository": "https://github.com/surebot/Eventline",
   "author": "James Campell",
   "license": "ISC",
   "scripts": {
