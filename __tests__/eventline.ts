@@ -110,7 +110,6 @@ test('should execute the first matching route only', () => {
 });
 
 test('should capture any exception', () => {
-  let actionResults = [];
   let eventline = new Eventline();
   let pattern = {};
 
@@ -124,7 +123,6 @@ test('should capture any exception', () => {
 });
 
 test('should call exception handler on any exception', () => {
-  let actionResults = [];
   let eventline = new Eventline();
   let pattern = {};
   let exception = "An Error"
@@ -140,4 +138,16 @@ test('should call exception handler on any exception', () => {
   eventline.route(pattern)
 
   expect(eventline.exceptionHandler).toBeCalledWith(exception, pattern)
+});
+
+test('handle no matching routes as an error', () => {
+  let eventline = new Eventline();
+  let event = {};
+
+  eventline.exceptionHandler = jest.fn();
+
+  eventline.start()
+  eventline.route(event)
+
+  expect(eventline.exceptionHandler).toBeCalledWith("No matching route found", event)
 });

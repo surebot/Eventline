@@ -1,3 +1,7 @@
+# v0.2.1
+
+- Handles events that aren't matched by any route as an error.
+
 # v0.2.0
 
 - Strings in patterns are now case-insensitive (i.e "Hello" will match "hello" and "HELLO")
