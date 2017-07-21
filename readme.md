@@ -8,6 +8,13 @@ Eventline, focuses on the Router in the ERA (Event Source, Router, Action) archi
 
 You can use Eventline either on it's own with custom event sources or other frameworks such as Botpress or Botkit.
 
+To Install simply run:
+
+`npm install eventline --save`
+
+To see an example, clone this repo and run:
+`npm run example`
+
 # Features
 
 ## Convention over configuration

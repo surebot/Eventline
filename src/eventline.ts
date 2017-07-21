@@ -17,7 +17,7 @@ import { executeAction } from './execute-action'
  */
 export class Eventline {
 
-    public exceptionHandler: (any, any) => void = (exception, event) => {
+    public exceptionHandler = (exception: any, event: any) => {
         console.error("An exception occured: " + exception + " For: " + event)
     }
 
@@ -141,7 +141,7 @@ export class Eventline {
      */
     private buildMiddlewareChain(type: string, subject: Rx.Subject<any>): Rx.Observable<any> {
 
-        return this.middlewares.reduce((currentObservable: Rx.Subject<any>, middleware: Middleware) => {
+        return this.middlewares.reduce((currentObservable: Rx.Observable<any>, middleware: Middleware) => {
 
             var observable = currentObservable.flatMap(event => {
                 return executeAction(middleware[type].bind(middleware), event)
