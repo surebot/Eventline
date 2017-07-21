@@ -76,3 +76,19 @@ If you are used to Promises or ES7's async functions, then Eventline also suppor
 Additionally since async actions have more control over flow of our route
 we can simply return `Rx.observable.empty()` to say that there wasn't an error
 but the route shouldn't do anything further although we don't reccomend it.
+
+## Built In Actions
+
+Eventline has one built in action called `when` it allows you to
+only allow an individual action to be triggered when a certain
+condition is met.
+
+```
+eventline.on({
+    text: /.+/
+})
+.(when(IsFirstMessage, SendWelcomeMessage))
+```
+
+In the example above when the `IsFirstMessage` pattern matches
+then the `SendWelcomeMessage` action will be triggered.
