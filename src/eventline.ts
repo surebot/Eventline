@@ -185,7 +185,7 @@ export class Eventline {
             event.pattern = matchingRoute.pattern
             matchingRoute.handle(event)
         } else {
-            console.log("No matching route found")
+            throw "No matching route found"
         }
     }
 
