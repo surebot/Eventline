@@ -85,3 +85,59 @@ test('should execute middleware', () => {
     2,
     middleware.afterMiddlewareValue]);
 });
+
+test('should execute the first matching route only', () => {
+  let actionResults = [];
+  let eventline = new Eventline();
+  let pattern = {};
+
+  eventline.on(pattern)
+  .then(event => {
+    actionResults.push(1)
+    return event
+  })
+
+  eventline.on(pattern)
+  .then(event => {
+    actionResults.push(2)
+    return event
+  })
+
+  eventline.start()
+  eventline.route(pattern)
+
+  expect(actionResults).toEqual([1]);
+});
+
+test('should capture any exception', () => {
+  let actionResults = [];
+  let eventline = new Eventline();
+  let pattern = {};
+
+  eventline.on(pattern)
+  .then(event => {
+    throw "An Error"
+  })
+
+  eventline.start()
+  eventline.route(pattern)
+});
+
+test('should call exception handler on any exception', () => {
+  let actionResults = [];
+  let eventline = new Eventline();
+  let pattern = {};
+  let exception = "An Error"
+
+  eventline.exceptionHandler = jest.fn();
+
+  eventline.on(pattern)
+  .then(event => {
+    throw exception
+  })
+
+  eventline.start()
+  eventline.route(pattern)
+
+  expect(eventline.exceptionHandler).toBeCalledWith(exception, pattern)
+});

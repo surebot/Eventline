@@ -17,6 +17,10 @@ import { executeAction } from './execute-action'
  */
 export class Eventline {
 
+    public exceptionHandler: (any, any) => void = (exception, event) => {
+        console.error("An exception occured: " + exception + " For: " + event)
+    }
+
     /**
      * This subject is used internally to initiate the
      * execution of middleware used before a route's actions
@@ -65,7 +69,16 @@ export class Eventline {
      */
     route(event: object) {
         console.log('Router Recieved: ' + JSON.stringify(event))
-        this.beforeMiddlewareSubject.next(event)
+
+        try {
+            this.beforeMiddlewareSubject.next(event)
+        }
+        catch(exception)
+        {
+            if (this.exceptionHandler) {
+                this.exceptionHandler(exception, event)
+            }    
+        }
     }
 
     /**
@@ -111,10 +124,10 @@ export class Eventline {
      * @memberof Router
      */
     start() {
-        this.routes.forEach(this._listenToRoute, this)
+        this.routes.forEach(this.listenToRoute, this)
 
-        this._buildMiddlewareChain("before", this.beforeMiddlewareSubject)
-        .subscribe(this._handleEvent.bind(this))
+        this.buildMiddlewareChain("before", this.beforeMiddlewareSubject)
+        .subscribe(this.handleEvent.bind(this))
     }
 
     /**
@@ -126,7 +139,7 @@ export class Eventline {
      * @returns {Rx.Observable<any>} 
      * @memberof Router
      */
-    _buildMiddlewareChain(type: string, subject: Rx.Subject<any>): Rx.Observable<any> {
+    private buildMiddlewareChain(type: string, subject: Rx.Subject<any>): Rx.Observable<any> {
 
         return this.middlewares.reduce((currentObservable: Rx.Subject<any>, middleware: Middleware) => {
 
@@ -146,8 +159,8 @@ export class Eventline {
      * @param {Route} route 
      * @memberof Router
      */
-    _listenToRoute(route: Route) {
-        this._buildMiddlewareChain("after", route.toObservable())
+    private listenToRoute(route: Route) {
+        this.buildMiddlewareChain("after", route.toObservable())
         .subscribe((event) => {
             this.afterMiddlewareSubject.next(event)
         })
@@ -160,8 +173,8 @@ export class Eventline {
      * @param {*} event 
      * @memberof Router
      */
-    _handleEvent(event: any) {
-        var matchingRoute = this._routeForEvent(event)
+    private handleEvent(event: any) {
+        var matchingRoute = this.routeForEvent(event)
             
         if (matchingRoute) {
             event.pattern = matchingRoute.pattern
@@ -182,7 +195,7 @@ export class Eventline {
      * @returns 
      * @memberof Router
      */
-    _routeForEvent(event: any) {
+    private routeForEvent(event: any) {
         return this.routes.find(route => {
             return route.matches(event) 
         })
