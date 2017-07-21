@@ -16,7 +16,12 @@ import { executeAction } from './execute-action'
  * @class Eventline
  */
 export class Eventline {
-
+    
+    /**
+     * Function for handling what happens when an exception occurs.
+     * 
+     * @memberof Eventline
+     */
     public exceptionHandler = (exception: any, event: any) => {
         console.error("An exception occured: " + exception + " For: " + event)
     }
