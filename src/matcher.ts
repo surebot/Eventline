@@ -53,7 +53,16 @@ function ArrayMatcher(array, topLevel=true) {
  */
 function EqualityMatcher(value) {
   return event => {
-    return event === value
+
+    let a = event
+    let b = value
+
+    if (typeof a === 'string' && typeof b === 'string') {
+      a = a.toLowerCase()
+      b = b.toLowerCase()
+    }
+
+    return a === b
   }
 }
 

@@ -12,12 +12,14 @@
   "scripts": {
     "info": "npm-scripts-info",
     "build": "tsc -p tsconfig.json",
-    "test": "jest"
+    "test": "jest",
+    "example": "npm run build && node example/index.js"
   },
   "scripts-info": {
     "info": "Display information about the scripts",
     "build": "(Trash and re)build the library",
-    "test": "Lint, build, and test the library"
+    "test": "Lint, build, and test the library",
+    "example": "Builds the library and runs the example"
   },
   "engines": {
     "node": ">=4.5"

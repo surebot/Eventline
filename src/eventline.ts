@@ -13,9 +13,13 @@ import { executeAction } from './execute-action'
  * and turning them into actions to be executed based on routes.
  * 
  * @export
- * @class Router
+ * @class Eventline
  */
-export class Router {
+export class Eventline {
+
+    public exceptionHandler = (exception: any, event: any) => {
+        console.error("An exception occured: " + exception + " For: " + event)
+    }
 
     /**
      * This subject is used internally to initiate the
@@ -65,7 +69,16 @@ export class Router {
      */
     route(event: object) {
         console.log('Router Recieved: ' + JSON.stringify(event))
-        this.beforeMiddlewareSubject.next(event)
+
+        try {
+            this.beforeMiddlewareSubject.next(event)
+        }
+        catch(exception)
+        {
+            if (this.exceptionHandler) {
+                this.exceptionHandler(exception, event)
+            }    
+        }
     }
 
     /**
@@ -111,10 +124,10 @@ export class Router {
      * @memberof Router
      */
     start() {
-        this.routes.forEach(this._listenToRoute, this)
+        this.routes.forEach(this.listenToRoute, this)
 
-        this._buildMiddlewareChain("before", this.beforeMiddlewareSubject)
-        .subscribe(this._handleEvent.bind(this))
+        this.buildMiddlewareChain("before", this.beforeMiddlewareSubject)
+        .subscribe(this.handleEvent.bind(this))
     }
 
     /**
@@ -126,9 +139,9 @@ export class Router {
      * @returns {Rx.Observable<any>} 
      * @memberof Router
      */
-    _buildMiddlewareChain(type: string, subject: Rx.Subject<any>): Rx.Observable<any> {
+    private buildMiddlewareChain(type: string, subject: Rx.Subject<any>): Rx.Observable<any> {
 
-        return this.middlewares.reduce((currentObservable: Rx.Subject<any>, middleware: Middleware) => {
+        return this.middlewares.reduce((currentObservable: Rx.Observable<any>, middleware: Middleware) => {
 
             var observable = currentObservable.flatMap(event => {
                 return executeAction(middleware[type].bind(middleware), event)
@@ -146,8 +159,8 @@ export class Router {
      * @param {Route} route 
      * @memberof Router
      */
-    _listenToRoute(route: Route) {
-        this._buildMiddlewareChain("after", route.toObservable())
+    private listenToRoute(route: Route) {
+        this.buildMiddlewareChain("after", route.toObservable())
         .subscribe((event) => {
             this.afterMiddlewareSubject.next(event)
         })
@@ -160,8 +173,8 @@ export class Router {
      * @param {*} event 
      * @memberof Router
      */
-    _handleEvent(event: any) {
-        var matchingRoute = this._routeForEvent(event)
+    private handleEvent(event: any) {
+        var matchingRoute = this.routeForEvent(event)
             
         if (matchingRoute) {
             event.pattern = matchingRoute.pattern
@@ -182,7 +195,7 @@ export class Router {
      * @returns 
      * @memberof Router
      */
-    _routeForEvent(event: any) {
+    private routeForEvent(event: any) {
         return this.routes.find(route => {
             return route.matches(event) 
         })
