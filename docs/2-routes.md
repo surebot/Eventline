@@ -1,16 +1,16 @@
 # Routes
 
-As previously mentioned the route hasn't been given any routes to follow. Routes are simply a pattern to match on the event payload followed by a series of actions to perform.
+As previously mentioned the eventline hasn't been given any routes to follow. Routes are simply a pattern to match on the event payload followed by a series of actions to perform.
 
 Without this nothing will happen. Here is an example of how to declare routes.
 
 ```
-router.on({
+eventline.on({
     type: 'message'
 })
 .then(DoSomething)
 
-router.start()
+eventline.start()
 ```
 
 When we get an event with a key of `type` set to the value of `message` then this
@@ -116,7 +116,7 @@ Then lets say we want to have a special route that only is triggered when there 
 image attachment we can simpliy declare a route like so.
 
 ```
-router.on([IsLocationMessagePattern, HasMoreThanOneAttachment])
+eventline.on([IsLocationMessagePattern, HasMoreThanOneAttachment])
 ```
 
 This pattern is flattened to match messages with more than one image attachment.
@@ -129,7 +129,7 @@ Instead of all memebers of the array having to match, only on of them has to mat
 This means you can do something like this.
 
 ```
-router.on({
+eventline.on({
     'message.text': ['hey', 'hello']
 })
 ```
@@ -142,7 +142,7 @@ So this allows us to also do this.
 ```
 let YesUtterances = ['yes', 'yup']
 
-router.on({
+eventline.on({
     'message.text': [YesUtterances, 'hello']
 })
 ```
@@ -159,7 +159,7 @@ function TextIsTooShort(event) {
     return event.text && event.text.length < 5
 }
 
-router.on(TextIsTooShort)
+eventline.on(TextIsTooShort)
 ```
 
 When TextIsTooShort returns true the route is triggered. In this example the function
@@ -173,7 +173,7 @@ function TextIsTooShort(text) {
     return text && text.length < 5
 }
 
-router.on({
+eventline.on({
     "text": TextIsTooShort
 })
 ```
@@ -191,8 +191,11 @@ And by now you can see we support matching by value, as long as the value
 of a key is equal then it will match. We support or javascript types
 that can be compared using the equality operator.
 
+For string values we are case-insensitive, so your pattern doesn't have to
+perfect match.
+
 ```
-router.on({
+eventline.on({
     "text": "I should be equal"
 })
 ```
@@ -205,7 +208,7 @@ For more complex value based matching we support regular expressions in addition
 to functions.
 
 ```
-router.on({
+eventline.on({
     'text': /\d+/
 })
 ```
@@ -220,7 +223,7 @@ capture groups in patterns to reference later.
 ```
 import * as XRegExp from 'xregexp'
 
-router.on({
+eventline.on({
     'text': new XRegExp("(?<age>\\d+)")
 })
 ```

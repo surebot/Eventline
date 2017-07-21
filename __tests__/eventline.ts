@@ -1,4 +1,4 @@
-import { Router } from '../src/router'
+import { Eventline } from '../src/eventline'
 import { Middleware } from '../src/middleware' 
 
 export class FakeMiddleware implements Middleware {
@@ -24,61 +24,61 @@ export class FakeMiddleware implements Middleware {
 
 test('should consume component', () => {
   let componentConsumed = false;
-  let router = new Router();
-  let component = router => {
+  let eventline = new Eventline();
+  let component = eventline => {
     componentConsumed = true
   }
 
-  router.use(component)
+  eventline.use(component)
 
   expect(componentConsumed).toBe(true);
 });
 
-test('should pass router to consumed component', () => {
-  let passedInRouter = false;
-  let router = new Router();
-  let component = router => {
-    passedInRouter = router
+test('should pass eventline to consumed component', () => {
+  let passedInEventline = false;
+  let eventline = new Eventline();
+  let component = eventline => {
+    passedInEventline = eventline
   }
 
-  router.use(component)
+  eventline.use(component)
 
-  expect(passedInRouter).toBe(router);
+  expect(passedInEventline).toBe(eventline);
 });
 
 test('should build routes', () => {
   let threadTriggered = false;
-  let router = new Router();
+  let eventline = new Eventline();
   let pattern = {};
 
-  router.on(pattern)
+  eventline.on(pattern)
   .then(event => {
     threadTriggered = true
     return event
   })
 
-  router.start()
-  router.route(pattern)
+  eventline.start()
+  eventline.route(pattern)
 
   expect(threadTriggered).toBe(true);
 });
 
 test('should execute middleware', () => {
   let actionResults = [];
-  let router = new Router();
+  let eventline = new Eventline();
   let pattern = {};
   let middleware = new FakeMiddleware(actionResults)
 
-  router.registerMiddleware(middleware)
+  eventline.registerMiddleware(middleware)
 
-  router.on(pattern)
+  eventline.on(pattern)
   .then(event => {
     actionResults.push(2)
     return event
   })
 
-  router.start()
-  router.route(pattern)
+  eventline.start()
+  eventline.route(pattern)
 
   expect(actionResults).toEqual([
     middleware.beforeMiddlewareValue,

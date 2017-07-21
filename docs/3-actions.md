@@ -8,7 +8,7 @@ called until either there are no-more actions to be done or one of the
 actions triggers an error.
 
 ```
-router.on({
+eventline.on({
     type: 'message'
 })
 .then(Step1)
@@ -32,7 +32,7 @@ In this action we reverse the text so "hey" becomes "yeh". The next action
 will see the modified text. 
 
 This system allows actions to modify, filter or add content to an event
-a router receives.
+a eventline receives.
 
 ## Asyncronous Actions
 

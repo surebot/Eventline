@@ -32,7 +32,7 @@ class ContextMiddleware extends Middleware {
     }
 }
 
-router.registerMiddleware(new ContextMiddleware())
+eventline.registerMiddleware(new ContextMiddleware())
 ```
 
 The above context middleware will load the context before executing the actions for a route and will save it after excuting all of the actions for a route.

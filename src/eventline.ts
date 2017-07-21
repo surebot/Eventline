@@ -13,9 +13,9 @@ import { executeAction } from './execute-action'
  * and turning them into actions to be executed based on routes.
  * 
  * @export
- * @class Router
+ * @class Eventline
  */
-export class Router {
+export class Eventline {
 
     /**
      * This subject is used internally to initiate the
