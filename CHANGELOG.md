@@ -1,3 +1,7 @@
+# v0.2.2
+
+- Fixes issues with previous version not being built correctly
+
 # v0.2.1
 
 - Handles events that aren't matched by any route as an error.
