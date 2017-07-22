@@ -1,6 +1,6 @@
 {
   "name": "eventline",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Micro-framework for routing events for chatbots and applications",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
