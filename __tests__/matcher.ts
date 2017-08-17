@@ -14,6 +14,20 @@ test('If object matches then result should be true', () => {
   expect(result).toBe(true);
 });
 
+test('If object matches some of object then result should be true', () => {
+  let pattern = {
+    'text': 'hello'
+  }
+  let event = {
+    'text': 'hello',
+    'name': 'james'
+  }
+  let functor = matcher(pattern)
+  let result = functor(event)
+
+  expect(result).toBe(true);
+});
+
 test('If object matches but in different case then result should be true', () => {
   let pattern = {
     'text': 'HeLlO'
