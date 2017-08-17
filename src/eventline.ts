@@ -26,7 +26,7 @@ export class Eventline {
     public exceptionHandler = (exception: any, event: any) => {
         console.error("An exception occured: " + exception + " For: " + event)
         
-        StackTrace.from().then(stackframes => {
+        StackTrace.from(exception).then(stackframes => {
         
             let stringifiedStack = stackframes.map(function(sf) {
                 return sf.toString();
