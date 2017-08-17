@@ -25,7 +25,7 @@ eventline.on({
     text: 'Hi'
 })
 
-// This action habdles the logging
+// This action handles the logging
 // we pass the event along to be handled by the
 // next action
 //
