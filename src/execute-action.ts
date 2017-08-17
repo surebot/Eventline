@@ -19,7 +19,7 @@ import * as Rx from 'rxjs/Rx'
 export function executeAction(action: (any) => any, event: any) {
     let result = action(event)
 
-    if (result instanceof Rx.Observable) {
+    if (Rx.Observable.isObservable(result)) {
         return result;
     } else if (result instanceof Promise) {
         return Rx.Observable.fromPromise(result)
