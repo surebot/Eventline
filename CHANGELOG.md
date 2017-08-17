@@ -1,3 +1,7 @@
+# v0.2.6
+
+- Fixes event showing up `[object Object]` in exception error message
+
 # v0.2.5
 
 - Removes dependencies on external stack tracing libraries
