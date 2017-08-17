@@ -4,7 +4,6 @@
  */
 
 import * as Rx from 'rxjs/Rx'
-import StackTrace from 'stacktrace-js'
 import { Middleware } from './middleware'
 import { Route } from './route'
 import { executeAction } from './execute-action'
@@ -26,14 +25,9 @@ export class Eventline {
     public exceptionHandler = (exception: any, event: any) => {
         console.error("An exception occured: " + exception + " For: " + event)
         
-        StackTrace.from(exception).then(stackframes => {
-        
-            let stringifiedStack = stackframes.map(function(sf) {
-                return sf.toString();
-            }).join('\n');
-
-            console.log(stringifiedStack);
-        })
+        if (exception.stack) {
+            console.error(exception.stack)
+        }
     }
 
     /**

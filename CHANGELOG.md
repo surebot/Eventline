@@ -1,4 +1,8 @@
-# v0.2.3
+# v0.2.5
+
+- Removes dependencies on external stack tracing libraries
+
+# v0.2.4
 
 - Fixes issues with previous version not being built correctly
 
