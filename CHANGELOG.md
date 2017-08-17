@@ -1,3 +1,8 @@
+# v0.2.3
+
+- The default exception handler now logs the stack trace to help you understand the
+  error
+
 # v0.2.2
 
 - Fixes issues with previous version not being built correctly
