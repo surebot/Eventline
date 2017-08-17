@@ -23,11 +23,7 @@ export class Eventline {
      * @memberof Eventline
      */
     public exceptionHandler = (exception: any, event: any) => {
-        console.error("An exception occured: " + exception + " For: " + event)
-        
-        if (exception.stack) {
-            console.error(exception.stack)
-        }
+        console.error(exception.stack || exception)
     }
 
     /**
@@ -152,7 +148,7 @@ export class Eventline {
 
         return this.middlewares.reduce((currentObservable: Rx.Observable<any>, middleware: Middleware) => {
 
-            var observable = currentObservable.flatMap(event => {
+            let observable = currentObservable.flatMap(event => {
                 return executeAction(middleware[type].bind(middleware), event)
             })
 
