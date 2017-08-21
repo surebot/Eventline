@@ -19,8 +19,6 @@ To see an example, clone this repo and run:
 
 ## Examples
 
-We have several examples [on the website](https://facebook.github.io/react/). Here is the first one to get you started:
-
 ```js
 on(event)
 .then(this)
@@ -59,24 +57,24 @@ around fuctional programming; taking an event and returning it to be given to th
 
 This makes it easier to reason about whats happening within your application.
 
-# Used By
+## Used By
 
 - Eventline powers Surebot: A chatbot service that curates the most Instagrammed food & drink spots. https://surebot.io
 
-# Developer Experience
+## Developer Experience
 
 I wrote Eventline as a lightweight way of getting a basic way of easily build a chatbot for Surebot. I already built and contributed to frameworks like Bottr and Botpress who take a
 all or nothing approach to adoption.
 
 It's easy to built a predictable easy to understand chatbot with this framework without having to re-write your entire app. 
 
-# Influences
+## Influences
 
 Eventline draws parralels from React, Express.js and Redux with it's component and declrative based architecture.
 
 It combines features from Bottr, Botpress and BroidKit to provide a flexible yet easy to use router system.
 
-# Motivation
+## Motivation
 
 Chatbots are inherrently a very asyncronous, state and event based application.
 As mentioned in the redux documentation our code has to manage more of this than ever before.
@@ -87,6 +85,6 @@ redux documentation http://redux.js.org/docs/introduction/Motivation.html
 We try to being some of this thinking to the chatbot world, making it easier to route
 events to a series of actions in a declarative fashion. 
 
-# Contributing
+## Contributing
 
 We are grateful to the community for contributing bugfixes and improvements. 
