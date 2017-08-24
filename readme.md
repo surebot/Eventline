@@ -24,6 +24,14 @@ on(event)
 .then(this)
 .then(that)
 ```
+## API Reference
+
+| Functions     | Description   |
+| ------------- | ------------- |
+| start()       | Content Cell  |
+| route()       | Content Cell  |
+| on()          | Content Cell  |
+
 
 ## Features
 
@@ -42,7 +50,7 @@ Eventline is written in Typescript to ensure
 the code is stable and robust whilst still supporting ECMAScript 5.
 
 **Async Support**
-Eventline is buit ontop of RX.js making asyncronous 
+Eventline is buit ontop of RX.js making asyncronous
 behaviour a first class citizen without having to drop down into
 promise or callback hell.
 
@@ -58,15 +66,15 @@ around fuctional programming; taking an event and returning it to be given to th
 This makes it easier to reason about whats happening within your application.
 
 ## Used By
-
-- Eventline powers Surebot: A chatbot service that curates the most Instagrammed food & drink spots. https://surebot.io
+- Eventline echo-bot: [Try here](https://facebook.com/Eventline-123597441623033/). [Github repo](https://github.com/surebot/eventline-messenger-bot)
+- Surebot: A chatbot service that curates the most Instagrammed food & drink spots. https://surebot.io
 
 ## Developer Experience
 
 I wrote Eventline as a lightweight way of getting a basic way of easily build a chatbot for Surebot. I already built and contributed to frameworks like Bottr and Botpress who take a
 all or nothing approach to adoption.
 
-It's easy to built a predictable easy to understand chatbot with this framework without having to re-write your entire app. 
+It's easy to built a predictable easy to understand chatbot with this framework without having to re-write your entire app.
 
 ## Influences
 
@@ -83,8 +91,11 @@ To get an idea of some of motivation behind Eventline, you should read the
 redux documentation http://redux.js.org/docs/introduction/Motivation.html
 
 We try to being some of this thinking to the chatbot world, making it easier to route
-events to a series of actions in a declarative fashion. 
+events to a series of actions in a declarative fashion.
 
 ## Contributing
 
-We are grateful to the community for contributing bugfixes and improvements. 
+We are grateful to the community for contributing bugfixes and improvements.
+
+## Acknowledgments
+- [James Campbell](https://github.com/jcampbell05)
