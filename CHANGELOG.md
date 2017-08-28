@@ -2,6 +2,7 @@
 
 - Adds sanity check for older RxJS versions to remind developers to check they are using
   the correct version of RxJS when they are having problems.
+- Fixes circular json error on built in exception handler.
 
 # v0.2.6
 
