@@ -6,7 +6,7 @@
 
 # v0.2.6
 
-- Fixes event showing up `[object Object]` in exception error message
+- Fixes event showing up as `[object Object]` in exception error message
 
 # v0.2.5
 
