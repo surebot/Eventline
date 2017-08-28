@@ -23,7 +23,7 @@ export class Eventline {
      * @memberof Eventline
      */
     public exceptionHandler = (exception: any, event: any) => {
-        console.error("An exception occured: " + exception + " For: " + JSON.stringify(event))
+        console.error("An exception occured: " + exception + " For: " + event)
         
         if (exception.stack) {
             console.error(exception.stack)
