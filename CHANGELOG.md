@@ -1,3 +1,8 @@
+# v0.2.7
+
+- Adds sanity check for older RxJS versions to remind developers to check they are using
+  the correct version of RxJS when they are having problems.
+
 # v0.2.6
 
 - Fixes event showing up `[object Object]` in exception error message
