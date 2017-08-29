@@ -3,11 +3,11 @@ Eventline is a micro-framework for routing and handling events for bots and appl
 
 Eventline is a predictable event routing framework for building chatbots or event based applications.
 
-It helps to easy build systems that respond to a stream of events in a consistent manner and are easy to test as well as understand.
+It helps to easily build systems that respond to a stream of events in a consistent manner and are easy to test as well as understand.
 
 Eventline, focuses on the Router in the ERA (Event Source, Router, Action) architecture pattern. Whilst providing a convention over configuration design to make it easier to integrate other systems.
 
-You can use Eventline either on it's own with custom event sources or other frameworks such as Botpress or Botkit.
+You can use Eventline either on its own with custom event sources or other frameworks such as Botpress or Botkit.
 
 ## Installation
 To Install simply run:
@@ -78,7 +78,7 @@ It's easy to built a predictable easy to understand chatbot with this framework 
 
 ## Influences
 
-Eventline draws parralels from React, Express.js and Redux with it's component and declrative based architecture.
+Eventline draws parralels from React, Express.js and Redux with it's component and declarative based architecture.
 
 It combines features from Bottr, Botpress and BroidKit to provide a flexible yet easy to use router system.
 
