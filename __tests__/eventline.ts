@@ -151,3 +151,22 @@ test('handle no matching routes as an error', () => {
 
   expect(eventline.exceptionHandler).toBeCalledWith("No matching route found", event)
 });
+
+test('continue handling events after an error', () => {
+  let actionResults = [];
+  let eventline = new Eventline();
+  let pattern = {};
+  let event = {};
+
+  eventline.on(pattern)
+  .then(event => {
+    actionResults.push(1)
+    throw "An Error"
+  })
+
+  eventline.start()
+  eventline.route(event)
+  eventline.route(event)
+
+  expect(actionResults).toEqual([1, 1]);
+});
