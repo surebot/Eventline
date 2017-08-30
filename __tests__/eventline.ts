@@ -170,3 +170,25 @@ test('continue handling events after an error', () => {
 
   expect(actionResults).toEqual([1, 1]);
 });
+
+test('stop excuting actions after an error', () => {
+  let actionResults = [];
+  let eventline = new Eventline();
+  let pattern = {};
+  let event = {};
+
+  eventline.on(pattern)
+  .then(event => {
+    actionResults.push(1)
+    throw "An Error"
+  })
+  .then(event => {
+    actionResults.push(2)
+    return event
+  })
+
+  eventline.start()
+  eventline.route(event)
+
+  expect(actionResults).toEqual([1]);
+});
