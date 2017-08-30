@@ -23,6 +23,8 @@ export function executeAction(action: (any) => any, event: any, exceptionHandler
         if (exceptionHandler) {
             exceptionHandler(exception, event)
         }
+
+        return Rx.Observable.empty()
     }
     
     if (result instanceof Rx.Observable) {
