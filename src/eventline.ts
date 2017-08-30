@@ -153,7 +153,7 @@ export class Eventline {
         return this.middlewares.reduce((currentObservable: Rx.Observable<any>, middleware: Middleware) => {
 
             let observable = currentObservable.flatMap(event => {
-                return executeAction(middleware[type].bind(middleware), event)
+                return executeAction(middleware[type].bind(middleware), event, this.exceptionHandler)
             })
 
             return observable
@@ -169,7 +169,7 @@ export class Eventline {
      * @memberof Router
      */
     private listenToRoute(route: Route) {
-        this.buildMiddlewareChain("after", route.toObservable())
+        this.buildMiddlewareChain("after", route.toObservable(this.exceptionHandler))
         .subscribe((event) => {
             this.afterMiddlewareSubject.next(event)
         })

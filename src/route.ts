@@ -111,12 +111,12 @@ export class Route {
      * @returns 
      * @memberof Route
      */
-    toObservable() {
+    toObservable(exceptionHandler: (exception: any, event: any) => void) {
         console.log('Building execution model for ' + JSON.stringify(this.pattern) + '...')
 
         return this.actions.reduce((observer, action) => {
             return observer.flatMap(context => {
-                return executeAction(action, context)
+                return executeAction(action, context, exceptionHandler)
             })
         }, this.subject)
     }
