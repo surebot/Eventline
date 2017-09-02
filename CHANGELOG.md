@@ -1,3 +1,7 @@
+# v0.2.8
+
+- Fixes bug where errors in actions could stop Eventline handling all events in the future.
+
 # v0.2.7
 
 - Adds sanity check for older RxJS versions to remind developers to check they are using
