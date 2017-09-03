@@ -26,8 +26,10 @@ export function executeAction(action: (any) => any, event: any, exceptionHandler
 
         return Rx.Observable.empty()
     }
-    
-    if (result instanceof Rx.Observable) {
+
+    if (!result) {
+        return Rx.Observable.of(event)
+    } else if (result instanceof Rx.Observable) {
         return result;
     } else if (result instanceof Promise) {
         return Rx.Observable.fromPromise(result)
