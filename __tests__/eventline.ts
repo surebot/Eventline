@@ -58,7 +58,7 @@ test('should build routes', () => {
   })
 
   eventline.start()
-  eventline.route(pattern)
+  eventline.route(Object.assign({}, pattern))
 
   expect(threadTriggered).toBe(true);
 });
@@ -78,7 +78,7 @@ test('should execute middleware', () => {
   })
 
   eventline.start()
-  eventline.route(pattern)
+  eventline.route(Object.assign({}, pattern))
 
   expect(actionResults).toEqual([
     middleware.beforeMiddlewareValue,
@@ -104,7 +104,7 @@ test('should execute the first matching route only', () => {
   })
 
   eventline.start()
-  eventline.route(pattern)
+  eventline.route(Object.assign({}, pattern))
 
   expect(actionResults).toEqual([1]);
 });
@@ -119,7 +119,7 @@ test('should capture any exception', () => {
   })
 
   eventline.start()
-  eventline.route(pattern)
+  eventline.route(Object.assign({}, pattern))
 });
 
 test('should call exception handler on any exception', () => {
@@ -135,9 +135,11 @@ test('should call exception handler on any exception', () => {
   })
 
   eventline.start()
-  eventline.route(pattern)
+  eventline.route(Object.assign({}, pattern))
 
-  expect(eventline.exceptionHandler).toBeCalledWith(exception, pattern)
+  expect(eventline.exceptionHandler).toBeCalledWith(exception, {
+    pattern: pattern
+  })
 });
 
 test('handle no matching routes as an error', () => {
@@ -156,7 +158,6 @@ test('continue handling events after an error', () => {
   let actionResults = [];
   let eventline = new Eventline();
   let pattern = {};
-  let event = {};
 
   eventline.on(pattern)
   .then(event => {
@@ -165,8 +166,8 @@ test('continue handling events after an error', () => {
   })
 
   eventline.start()
-  eventline.route(event)
-  eventline.route(event)
+  eventline.route(Object.assign({}, pattern))
+  eventline.route(Object.assign({}, pattern))
 
   expect(actionResults).toEqual([1, 1]);
 });
@@ -175,7 +176,6 @@ test('stop excuting actions after an error', () => {
   let actionResults = [];
   let eventline = new Eventline();
   let pattern = {};
-  let event = {};
 
   eventline.on(pattern)
   .then(event => {
@@ -188,7 +188,7 @@ test('stop excuting actions after an error', () => {
   })
 
   eventline.start()
-  eventline.route(event)
+  eventline.route(Object.assign({}, pattern))
 
   expect(actionResults).toEqual([1]);
 });
@@ -211,8 +211,8 @@ test('should execute route if at least one pattern matches', () => {
   })
 
   eventline.start()
-  eventline.route(patternA)
-  eventline.route(patternB)
+  eventline.route(Object.assign({}, patternA))
+  eventline.route(Object.assign({}, patternB))
 
   expect(actionResults).toEqual([1,1]);
 });
