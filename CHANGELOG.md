@@ -1,3 +1,7 @@
+# v0.2.9
+
+- Explicity declares lodash dependency used by Eventline
+
 # v0.2.8
 
 - Fixes bug where errors in actions could stop Eventline handling all events in the future
