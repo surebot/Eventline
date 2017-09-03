@@ -6,6 +6,7 @@
 import * as Rx from 'rxjs/Rx'
 import { Middleware } from './middleware'
 import { Route } from './route'
+import { RouteBuilder } from './route-builder'
 import { executeAction } from './execute-action'
 
 /**
@@ -112,18 +113,22 @@ export class Eventline {
     }
 
     /**
-     * Registers a route for the router
+     * Registers routes for the router
      * 
-     * @param {*} pattern 
-     * @returns 
+     * @param {*} patterns
+     * @returns RouteBuilder
      * @memberof Router
      */
-    on(pattern: any) {
-        console.log('Router Registered Route: ' + JSON.stringify(pattern))
+    on(...patterns: any[]) {
 
-        var route = new Route(pattern)
-        this.routes.push(route)
-        return route
+        let newRoutes = patterns.map(pattern => {
+            console.log('Router Registered Route: ' + JSON.stringify(pattern))
+            return new Route(pattern)
+        })
+        
+        this.routes = this.routes.concat(newRoutes)
+
+        return new RouteBuilder(newRoutes)
     }
 
     /**

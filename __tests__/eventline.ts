@@ -192,3 +192,27 @@ test('stop excuting actions after an error', () => {
 
   expect(actionResults).toEqual([1]);
 });
+
+test('should execute route if at least one pattern matches', () => {
+  let actionResults = [];
+  let eventline = new Eventline();
+  let patternA = {
+    value: 1
+  };
+
+  let patternB = {
+    value: 2
+  };
+
+  eventline.on(patternA, patternB)
+  .then(event => {
+    actionResults.push(1)
+    return event
+  })
+
+  eventline.start()
+  eventline.route(patternA)
+  eventline.route(patternB)
+
+  expect(actionResults).toEqual([1,1]);
+});

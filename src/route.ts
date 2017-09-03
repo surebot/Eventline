@@ -73,7 +73,6 @@ export class Route {
      */
     then(action: (any) => any) {
         this.actions.push(action)
-        return this
     }
 
     /**

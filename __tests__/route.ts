@@ -41,7 +41,8 @@ test('should execute actions in order', () => {
     actionResults.push(1)
     return event
   })
-  .then(event => {
+  
+  route.then(event => {
     actionResults.push(2)
     return event
   })

@@ -257,3 +257,16 @@ function MyAction(event) {
 
 For keypaths with multiple regular expressions, this function will use the first one that matches
 to extract the capture groups.
+
+## Multiple Routes
+
+You can also declare multiple patterns for a route by passing in multiple
+arguments to the `on` method like so.
+
+```
+eventline.on(patternA, patternB)
+```
+
+If at least one of the patterns match an event then Eventline will use
+that route. This allows you to perform the same set of actions for
+multiple types of events.

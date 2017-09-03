@@ -1,3 +1,8 @@
+# v0.2.10
+
+- You can now declare routes that are triggered if at least one pattern matches,
+  for example with `eventline.on(patternA, patternB)` if pattern A or B match then Eventline will use that route
+
 # v0.2.9
 
 - Explicity declares lodash dependency used by Eventline
