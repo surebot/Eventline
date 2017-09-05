@@ -1,3 +1,7 @@
+# v0.2.13
+
+- Fixes issues with previous version not being built correctly
+
 # v0.2.12
 
 - Fixes issue with fix from previous version not working due to false positive

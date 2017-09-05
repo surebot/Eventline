@@ -165,6 +165,8 @@ export class Eventline {
                     return currentObservable
                 }
 
+                console.log(middlewareFunction)
+
                 return executeAction(middlewareFunction.bind(middleware), event, this.exceptionHandler)
             })
 
