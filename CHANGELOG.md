@@ -1,3 +1,7 @@
+# v0.2.12
+
+- Fixes issue with fix from previous version not working due to false positive
+
 # v0.2.11
 
 - Fixes crash when middleware lacked either the `before` or `after` method
