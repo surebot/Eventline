@@ -1,9 +1,13 @@
+# v0.2.11
+
+- Fixes crash when middleware lacked either the `before` or `after` method
+
 # v0.2.10
 
 - You can now declare routes that are triggered if at least one pattern matches,
   for example with `eventline.on(patternA, patternB)` if either pattern A or B match then Eventline will use that route
 - If an action fails to return an event then Eventline will automatically make
-  sure the next action has the original event that the last action failed to return.
+  sure the next action has the original event that the last action failed to return
 
 # v0.2.9
 
