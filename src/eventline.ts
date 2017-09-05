@@ -158,6 +158,13 @@ export class Eventline {
         return this.middlewares.reduce((currentObservable: Rx.Observable<any>, middleware: Middleware) => {
 
             let observable = currentObservable.flatMap(event => {
+
+                let middlewareFunction = middleware[type]
+
+                if (!middlewareFunction) {
+                    return currentObservable
+                }
+
                 return executeAction(middleware[type].bind(middleware), event, this.exceptionHandler)
             })
 

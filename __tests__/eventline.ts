@@ -86,6 +86,11 @@ test('should execute middleware', () => {
     middleware.afterMiddlewareValue]);
 });
 
+test('should handle middleware with missing functions', () => {
+  let eventline = new Eventline();
+  eventline.registerMiddleware({})
+});
+
 test('should execute the first matching route only', () => {
   let actionResults = [];
   let eventline = new Eventline();
