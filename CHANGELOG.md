@@ -1,3 +1,8 @@
+# v0.2.14
+
+- Fixes issue where later middleware wouldn't be triggered if an earlier one didn't
+  implement all of the middleware methods
+
 # v0.2.13
 
 - Fixes issues with previous version not being built correctly
