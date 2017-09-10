@@ -155,16 +155,14 @@ export class Eventline {
      */
     private buildMiddlewareChain(type: string, subject: Rx.Subject<any>): Rx.Observable<any> {
 
-        return this.middlewares.reduce((currentObservable: Rx.Observable<any>, middleware: Middleware) => {
+        let validMiddleware = this.middlewares.filter(middleware => {
+            return middleware[type]
+        })
+
+        return validMiddleware.reduce((currentObservable: Rx.Observable<any>, middleware: Middleware) => {
 
             let observable = currentObservable.flatMap(event => {
-
                 let middlewareFunction = middleware[type]
-
-                if (!middlewareFunction) {
-                    return currentObservable
-                }
-
                 return executeAction(middlewareFunction.bind(middleware), event, this.exceptionHandler)
             })
 

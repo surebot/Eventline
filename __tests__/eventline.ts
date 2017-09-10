@@ -89,7 +89,35 @@ test('should execute middleware', () => {
 test('should handle middleware with missing functions', () => {
   let eventline = new Eventline();
   eventline.registerMiddleware({})
+
+  eventline.on({})
+  eventline.start()
   eventline.route({})
+});
+
+test('should execute middleware after one with missing functions', () => {
+  let beforeMiddlewareTriggered = false;
+  let afterMiddlewareTriggered = false;
+  let eventline = new Eventline();
+ 
+  eventline.registerMiddleware({})
+  eventline.registerMiddleware({
+    before: context => {
+      beforeMiddlewareTriggered = true
+    }
+  })
+  eventline.registerMiddleware({
+    after: context => {
+      afterMiddlewareTriggered = true
+    }
+  })
+
+  eventline.on({})
+  eventline.start()
+  eventline.route({})
+
+  expect(beforeMiddlewareTriggered).toEqual(true)
+  expect(afterMiddlewareTriggered).toEqual(true)
 });
 
 test('should execute the first matching route only', () => {
@@ -169,6 +197,54 @@ test('continue handling events after an error', () => {
   .then(event => {
     actionResults.push(1)
     throw "An Error"
+  })
+
+  eventline.start()
+  eventline.route(Object.assign({}, pattern))
+  eventline.route(Object.assign({}, pattern))
+
+  expect(actionResults).toEqual([1, 1]);
+});
+
+test('handlle future events once after an error', () => {
+  let actionResults = [];
+  let eventline = new Eventline();
+  let pattern = { 'pattern': 'A' };
+  let patternB = { 'pattern': 'B' };
+
+  eventline.on(pattern)
+  .then(event => {
+    actionResults.push(1)
+    throw "An Error"
+  })
+
+  eventline.on(patternB)
+  .then(event => {
+    actionResults.push(2)
+    return event
+  })
+
+  eventline.start()
+  eventline.route(Object.assign({}, pattern))
+  eventline.route(Object.assign({}, patternB))
+
+  expect(actionResults).toEqual([1, 2]);
+});
+
+test('should execute the first matching route only after an error', () => {
+  let actionResults = [];
+  let eventline = new Eventline();
+  let pattern = {};
+
+  eventline.on(pattern)
+  .then(event => {
+    actionResults.push(1)
+    throw "An Error"
+  })
+
+  eventline.on(pattern)
+  .then(event => {
+    actionResults.push(2)
   })
 
   eventline.start()
