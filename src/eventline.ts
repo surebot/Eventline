@@ -80,15 +80,15 @@ export class Eventline {
     route(event: object) {
         console.log('Router Recieved: ' + JSON.stringify(event))
 
-        try {
+        // try {
             this.beforeMiddlewareSubject.next(event)
-        }
-        catch(exception)
-        {
-            if (this.exceptionHandler) {
-                this.exceptionHandler(exception, event)
-            }    
-        }
+        // }
+        // catch(exception)
+        // {
+        //     if (this.exceptionHandler) {
+        //         this.exceptionHandler(exception, event)
+        //     }    
+        // }
     }
 
     /**
@@ -141,7 +141,19 @@ export class Eventline {
         this.routes.forEach(this.listenToRoute, this)
 
         this.buildMiddlewareChain("before", this.beforeMiddlewareSubject)
-        .subscribe(this.handleEvent.bind(this))
+        .subscribe(event => {
+
+            try {
+                
+                this.handleEvent(event)
+            
+            } catch(exception) {
+
+                if (this.exceptionHandler) {
+                    this.exceptionHandler(exception, event)
+                }
+            }
+        })
     }
 
     /**

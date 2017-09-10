@@ -1,3 +1,7 @@
+# v0.2.15
+
+- Fixes bug where a missing route would trigger a crash
+
 # v0.2.14
 
 - Fixes issue where later middleware wouldn't be triggered if an earlier one didn't
