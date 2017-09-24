@@ -5,7 +5,7 @@
 
 import * as Rx from 'rxjs/Rx'
 
-function catchException(exceptionHandler: (exception: any, event: any) => Rx.Observable, event: any,  exception: any) {
+function catchException(exceptionHandler: (exception: any, event: any) => Rx.Observable<any>, event: any,  exception: any) {
     if (exceptionHandler) {
         exceptionHandler(exception, event)
     }
@@ -13,7 +13,7 @@ function catchException(exceptionHandler: (exception: any, event: any) => Rx.Obs
     return Rx.Observable.empty()
 }
 
-function buildExceptionCatcher(exceptionHandler: (exception: any, event: any) => Rx.Observable, event: any) {
+function buildExceptionCatcher(exceptionHandler: (exception: any, event: any) => Rx.Observable<any>, event: any) {
     return function (exception) {
         return catchException(exceptionHandler, event, exception)
     }
