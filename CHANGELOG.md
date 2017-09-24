@@ -1,3 +1,8 @@
+# v0.2.16
+
+- Fixes crash when trying to log null error
+- Fixes catching errors triggered in actions which return observables
+
 # v0.2.15
 
 - Fixes bug where a missing route would trigger a crash

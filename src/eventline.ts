@@ -26,7 +26,7 @@ export class Eventline {
     public exceptionHandler = (exception: any, event: any) => {
         console.error("An exception occured: " + exception + " For: " + event)
         
-        if (exception.stack) {
+        if (exception && exception.stack) {
             console.error(exception.stack)
         }
     }
@@ -80,15 +80,7 @@ export class Eventline {
     route(event: object) {
         console.log('Router Recieved: ' + JSON.stringify(event))
 
-        // try {
-            this.beforeMiddlewareSubject.next(event)
-        // }
-        // catch(exception)
-        // {
-        //     if (this.exceptionHandler) {
-        //         this.exceptionHandler(exception, event)
-        //     }    
-        // }
+        this.beforeMiddlewareSubject.next(event)
     }
 
     /**

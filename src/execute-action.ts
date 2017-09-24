@@ -5,6 +5,20 @@
 
 import * as Rx from 'rxjs/Rx'
 
+function catchException(exceptionHandler: (exception: any, event: any) => Rx.Observable, event: any,  exception: any) {
+    if (exceptionHandler) {
+        exceptionHandler(exception, event)
+    }
+
+    return Rx.Observable.empty()
+}
+
+function buildExceptionCatcher(exceptionHandler: (exception: any, event: any) => Rx.Observable, event: any) {
+    return function (exception) {
+        return catchException(exceptionHandler, event, exception)
+    }
+}
+
 /**
  * Internal method used by the middleware and routes for
  * executing the actions.
@@ -20,19 +34,15 @@ export function executeAction(action: (any) => any, event: any, exceptionHandler
     try {
         var result = action(event)
     } catch (exception) {
-        if (exceptionHandler) {
-            exceptionHandler(exception, event)
-        }
-
-        return Rx.Observable.empty()
+        return catchException(exceptionHandler, event, exception)
     }
 
     if (!result) {
         return Rx.Observable.of(event)
     } else if (result instanceof Rx.Observable) {
-        return result;
+        return result.catch(buildExceptionCatcher(exceptionHandler, event))        
     } else if (result instanceof Promise) {
-        return Rx.Observable.fromPromise(result)
+        return Rx.Observable.fromPromise(result).catch(buildExceptionCatcher(exceptionHandler, event)) 
     } else if (result instanceof Function) {
         return executeAction(result, event, exceptionHandler);
     } else {
