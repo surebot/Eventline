@@ -7,17 +7,16 @@ test('When action returns Observable return Observable', () => {
         return observable
     }, null, null)
 
-    expect(result).toBe(observable);
+    expect(result instanceof Rx.Observable).toEqual(true);
 });
 
 test('When action returns Promise return Observable created from Promise', () => {
     let promise = new Promise((resolve, reject) => {})
-    let expectedResult = Rx.Observable.fromPromise(promise)
     let result = executeAction(event => {
         return promise
     }, null, null)
 
-    expect(result).toEqual(expectedResult);
+    expect(result instanceof Rx.Observable).toEqual(true)
 });
 
 test('When action returns function execute it', () => {
@@ -29,7 +28,7 @@ test('When action returns function execute it', () => {
         return functor
     }, null, null)
 
-    expect(result).toBe(observable);
+    expect(result instanceof Rx.Observable).toEqual(true)
 });
 
 test('When action returns value return Observable created from value', () => {
