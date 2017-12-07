@@ -62,6 +62,28 @@ test('When action returns array execute in order', () => {
     })
 });
 
+
+test('When passed array of actions execute in order', () => {
+    let events = [];
+
+    let functor = (value) => {
+        return (event) => {
+            events.push(value)
+            return event
+        }
+    }
+
+    let result = executeAction([
+        functor(1),
+        functor(2)
+    ], 1, null)
+
+    result
+    .subscribe(function(event) {
+        expect(events).toEqual([1, 2])
+    })
+});
+
 test('When action returns value return Observable created from value', () => {
     let value = 1
     let observable = Rx.Observable.of(value)

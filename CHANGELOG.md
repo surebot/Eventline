@@ -1,6 +1,10 @@
+# v0.2.18
+
+- Adds abilty to provide array of actions to perform in order to the `.then` method
+
 # v0.2.17
 
-- Adds abilty to provide array of actions to perform in order
+- Adds abilty for action to provide array of actions to perform in order
 
 # v0.2.16
 

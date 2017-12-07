@@ -30,9 +30,15 @@ function buildExceptionCatcher(exceptionHandler: (exception: any, event: any) =>
  * @param {*} event 
  * @returns 
  */
-export function executeAction(action: (any) => any, event: any, exceptionHandler: (exception: any, event: any) => void) {
+export function executeAction(action: any, event: any, exceptionHandler: (exception: any, event: any) => void) {
     try {
-        var result = action(event)
+        
+        if (action instanceof Function) {
+            var result = action(event)
+        } else {
+            var result = action
+        }
+
     } catch (exception) {
         console.error(exception)
         return catchException(exceptionHandler, event, exception)
