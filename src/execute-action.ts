@@ -39,6 +39,22 @@ export function executeAction(action: (any) => any, event: any, exceptionHandler
 
     if (!result) {
         return Rx.Observable.of(event)
+    } else if (result instanceof Array) {
+
+        if (result.length == 0) {
+            throw "Empty array of actions cannot be returned"
+        }
+
+        let firstAction = executeAction(result[0], event, exceptionHandler)
+
+        return result.reduce((observer, action) => {
+            console.log('FUCK')
+            return observer.flatMap(context => {
+                console.log('MOO')
+                return executeAction(action, event, exceptionHandler)
+            })
+        }, firstAction)
+
     } else if (result instanceof Rx.Observable) {
         return result.catch(buildExceptionCatcher(exceptionHandler, event))        
     } else if (result instanceof Promise) {

@@ -1,3 +1,7 @@
+# v0.2.17
+
+- Adds abilty to provide array of actions to perform in order
+
 # v0.2.16
 
 - Fixes crash when trying to log null error

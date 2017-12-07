@@ -31,6 +31,35 @@ test('When action returns function execute it', () => {
     expect(result instanceof Rx.Observable).toEqual(true)
 });
 
+test('When action returns empty array throw error', () => {
+    expect(() => {
+        executeAction(event => {
+            return []
+        }, null, null)
+    }).toThrow();
+});
+
+test('When action returns array execute in order', () => {
+    let events = [];
+    let observableA = Rx.Observable.of(1)
+    let observableB = Rx.Observable.of(2)
+
+    let result = executeAction(event => {
+        return [
+            observableA,
+            observableB
+        ]
+    }, null, null)
+
+    result
+    .subscribe(function(x) {
+        console.log(x);
+        events.push(x);
+    })
+
+    expect(events).toEqual([1. 2])
+});
+
 test('When action returns value return Observable created from value', () => {
     let value = 1
     let observable = Rx.Observable.of(value)
