@@ -34,6 +34,7 @@ export function executeAction(action: (any) => any, event: any, exceptionHandler
     try {
         var result = action(event)
     } catch (exception) {
+        console.error(exception)
         return catchException(exceptionHandler, event, exception)
     }
 
@@ -47,13 +48,21 @@ export function executeAction(action: (any) => any, event: any, exceptionHandler
 
         let firstAction = executeAction(result[0], event, exceptionHandler)
 
-        return result.reduce((observer, action) => {
-            console.log('FUCK')
-            return observer.flatMap(context => {
-                console.log('MOO')
-                return executeAction(action, event, exceptionHandler)
-            })
-        }, firstAction)
+        if (result.length == 1) {
+
+            return firstAction
+
+        } else {
+
+            result.shift()
+
+            return result.reduce((observer, action) => {
+                return observer.flatMap(context => {
+                    return executeAction(action, event, exceptionHandler)
+                })
+                
+            }, firstAction)
+        }
 
     } else if (result instanceof Rx.Observable) {
         return result.catch(buildExceptionCatcher(exceptionHandler, event))        

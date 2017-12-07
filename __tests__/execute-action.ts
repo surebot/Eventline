@@ -41,23 +41,25 @@ test('When action returns empty array throw error', () => {
 
 test('When action returns array execute in order', () => {
     let events = [];
-    let observableA = Rx.Observable.of(1)
-    let observableB = Rx.Observable.of(2)
+
+    let functor = (value) => {
+        return (event) => {
+            events.push(value)
+            return event
+        }
+    }
 
     let result = executeAction(event => {
         return [
-            observableA,
-            observableB
+            functor(1),
+            functor(2)
         ]
-    }, null, null)
+    }, 1, null)
 
     result
-    .subscribe(function(x) {
-        console.log(x);
-        events.push(x);
+    .subscribe(function(event) {
+        expect(events).toEqual([1, 2])
     })
-
-    expect(events).toEqual([1. 2])
 });
 
 test('When action returns value return Observable created from value', () => {
