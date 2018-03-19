@@ -1,3 +1,7 @@
+# v0.2.19
+
+- Removes dependencies which were installed but were only needed for development of this package and not at runtime.
+
 # v0.2.18
 
 - Adds abilty to provide array of actions to perform in order to the `.then` method

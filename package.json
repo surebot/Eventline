@@ -1,6 +1,6 @@
 {
   "name": "eventline",
-  "version": "0.2.18",
+  "version": "0.2.20",
   "description": "A declrative micro-framework for routing events for chatbots and applications",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
@@ -27,6 +27,8 @@
     "node": ">=4.5"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.68",
+    "@types/xregexp": "^3.0.28",
     "@types/jest": "^20.0.2",
     "@types/node": "^8.0.4",
     "ava": "^0.20.0",
@@ -95,9 +97,6 @@
   },
   "dependencies": {
     "@reactivex/rxjs": "^5.4.1",
-    "@types/lodash": "^4.14.68",
-    "@types/node": "^8.0.7",
-    "@types/xregexp": "^3.0.28",
     "lodash": "^4.17.4",
     "rxjs": "^5.4.1",
     "tslib": "^1.6.0",

@@ -31,7 +31,7 @@ test('When action returns function execute it', () => {
     expect(result instanceof Rx.Observable).toEqual(true)
 });
 
-test('When action returns empty array throw error', () => {
+test('When action returns empty array return event', () => {
     expect(() => {
         executeAction(event => {
             return []

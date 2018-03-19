@@ -49,7 +49,7 @@ export function executeAction(action: any, event: any, exceptionHandler: (except
     } else if (result instanceof Array) {
 
         if (result.length == 0) {
-            throw "Empty array of actions cannot be returned"
+            return Rx.Observable.of(event)
         }
 
         let firstAction = executeAction(result[0], event, exceptionHandler)
