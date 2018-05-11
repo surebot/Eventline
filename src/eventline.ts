@@ -3,7 +3,6 @@
  * Copyright James Campbell 2017
  */
 
-import * as Rx from 'rxjs/Rx'
 import { Middleware } from './middleware'
 import { Route } from './route'
 import { RouteBuilder } from './route-builder'

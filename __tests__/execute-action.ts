@@ -1,140 +1,128 @@
-import * as Rx from 'rxjs/Rx'
 import { executeAction } from '../src/execute-action'
 
-test('When action returns Observable return Observable', () => {
-    let observable = Rx.Observable.of(1)
-    let result = executeAction(event => {
-        return observable
-    }, null, null)
+// test('When action returns Promise execute it ', () => {
 
-    expect(result instanceof Rx.Observable).toEqual(true);
-});
+//     let promise = new Promise((resolve, reject) => {
+//         resolve(1)
+//     })
 
-test('When action returns Promise return Observable created from Promise', () => {
-    let promise = new Promise((resolve, reject) => {})
-    let result = executeAction(event => {
-        return promise
-    }, null, null)
+//     let result = executeAction(event => {
+//         return promise
+//     }, null, null)
 
-    expect(result instanceof Rx.Observable).toEqual(true)
-});
+//     expect(result.next()).toEqual(1)
+// });
 
 test('When action returns function execute it', () => {
-    let observable = Rx.Observable.of(1)
+    let value = 1
     let functor = action => {
-        return observable
+        return value
     }
-    let result = executeAction(event => {
+    let executor = executeAction(event => {
         return functor
     }, null, null)
 
-    expect(result instanceof Rx.Observable).toEqual(true)
+    expect(executor.next().value).toEqual(1)
 });
 
-test('When action returns generator execute it', () => {
-    let events = []
+// test('When action returns generator execute it', () => {
+//     let events = []
 
-    let functorA = function*(action) {
-        events.push(1)
-    }
+//     let functorA = function*(action) {
+//         events.push(1)
+//     }
 
-    let functorB = function*(action) {
-        yield functorA
-        yield functorA
-        yield functorA
-        yield functorA
-    }
+//     let functorB = function*(action) {
+//         yield functorA
+//         yield functorA
+//         yield functorA
+//         yield functorA
+//     }
 
-    executeAction(functorB, null, null)
+//     executeAction(functorB, null, null)
 
-    expect(events).toEqual([1, 1, 1, 1])
-});
+//     expect(events).toEqual([1, 1, 1, 1])
+// });
 
-test('When action returns empty array do nothing', () => {
-    executeAction(event => {
-        return []
-    }, null, null)
-});
+// test('When action returns empty array do nothing', () => {
+//     executeAction(event => {
+//         return []
+//     }, null, null)
+// });
 
-test('When action returns array execute in order', () => {
-    let events = [];
+// test('When action returns array execute in order', () => {
+//     let events = [];
 
-    let functor = (value) => {
-        return (event) => {
-            events.push(value)
-            return event
-        }
-    }
+//     let functor = (value) => {
+//         return (event) => {
+//             events.push(value)
+//             return event
+//         }
+//     }
 
-    let result = executeAction(event => {
-        return [
-            functor(1),
-            functor(2)
-        ]
-    }, 1, null)
+//     let result = executeAction(event => {
+//         return [
+//             functor(1),
+//             functor(2)
+//         ]
+//     }, 1, null)
 
-    result
-    .subscribe(function(event) {
-        expect(events).toEqual([1, 2])
-    })
-});
+//     result
+//     .subscribe(function(event) {
+//         expect(events).toEqual([1, 2])
+//     })
+// });
 
 
-test('When passed array of actions execute in order', () => {
-    let events = [];
+// test('When passed array of actions execute in order', () => {
+//     let events = [];
 
-    let functor = (value) => {
-        return (event) => {
-            events.push(value)
-            return event
-        }
-    }
+//     let functor = (value) => {
+//         return (event) => {
+//             events.push(value)
+//             return event
+//         }
+//     }
 
-    let result = executeAction([
-        functor(1),
-        functor(2)
-    ], 1, null)
+//     let executor = executeAction([
+//         functor(1),
+//         functor(2)
+//     ], 1, null)
 
-    result
-    .subscribe(function(event) {
-        expect(events).toEqual([1, 2])
-    })
-});
+//     let results = Array.from(executor);
+//     expect(events).toEqual([1, 2])
+// });
 
-test('When action returns value return Observable created from value', () => {
+test('When action returns value return value', () => {
     let value = 1
-    let observable = Rx.Observable.of(value)
-    let result = executeAction(event => {
+    let executor = executeAction(event => {
         return value
     }, null, null)
 
-    expect(result).toEqual(observable);
+    expect(executor.next().value).toEqual(value);
 });
 
 test('When action returns void return event', () => {
     let event = {}
-    let observable = Rx.Observable.of(event)
-    let result = executeAction(event => {}, event, null)
+    let executor = executeAction(event => {}, event, null)
 
-    expect(result).toEqual(observable);
+    expect(executor.next().value).toEqual(event);
 });
 
 test('When action returns undefined return event', () => {
     let event = {}
-    let observable = Rx.Observable.of(event)
-    let result = executeAction(event => {
+    let executor = executeAction(event => {
         return undefined
     }, event, null)
 
-    expect(result).toEqual(observable);
+    expect(executor.next().value).toEqual(event);
 });
 
 test('When action returns null return event', () => {
     let event = {}
-    let observable = Rx.Observable.of(event)
-    let result = executeAction(event => {
+    let executor = executeAction(event => {
         return null
     }, event, null)
 
-    expect(result).toEqual(observable);
+    expect(executor.next().value).toEqual(event);
 });

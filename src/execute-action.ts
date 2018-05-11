@@ -32,7 +32,7 @@ function buildExceptionCatcher(exceptionHandler: (exception: any, event: any) =>
  * @param {*} event 
  * @returns 
  */
-export function executeAction(action: any, event: any, exceptionHandler: (exception: any, event: any) => void) {
+export function* executeAction(action: any, event: any, exceptionHandler: (exception: any, event: any) => void) {
     try {
         
         if (!(action instanceof GeneratorFunction) && action instanceof Function) {
@@ -47,48 +47,41 @@ export function executeAction(action: any, event: any, exceptionHandler: (except
     }
 
     if (!result) {
-        return Rx.Observable.of(event)
-    } else if (result instanceof Array) {
+        yield event
+    // } else if (result instanceof Array) {
 
-        if (result.length == 0) {
-            return Rx.Observable.of(event)
-        }
+    //     var currentEvent = event
 
-        let firstAction = executeAction(result[0], event, exceptionHandler)
+    //     for (var action of result) {
+    //         currentEvent = yield executeAction(action, currentEvent, exceptionHandler)
+    //     }
 
-        if (result.length == 1) {
+    //     yield currentEvent
 
-            return firstAction
+    // } else if (result instanceof Promise) {
 
-        } else {
+    //     try {
+    //         result = yield result
+    //         return result
 
-            result.shift()
+    //     } catch(exception) {
+    //         var catcher = buildExceptionCatcher(exceptionHandler, event)
+    //         return catchException(exceptionHandler, event, exception)
+    //     }
+        
+    // } else if (result instanceof GeneratorFunction) {
 
-            return result.reduce((observer, action) => {
-                return observer.flatMap(context => {
-                    return executeAction(action, event, exceptionHandler)
-                })
-                
-            }, firstAction)
-        }
+    //     var lastResult = result
 
-    } else if (result instanceof Rx.Observable) {
-        return result.catch(buildExceptionCatcher(exceptionHandler, event))        
-    } else if (result instanceof Promise) {
-        return Rx.Observable.fromPromise(result).catch(buildExceptionCatcher(exceptionHandler, event)) 
-    } else if (result instanceof GeneratorFunction) {
+    //     for (let nextResult of result(event)) { 
+    //         lastResult = executeAction(nextResult, event, exceptionHandler) 
+    //     }
 
-        var lastResult = result
-
-        for (let nextResult of result(event)) { 
-            lastResult = executeAction(nextResult, event, exceptionHandler) 
-        }
-
-        return lastResult
+    //     return lastResult
 
     } else if (result instanceof Function) {
-        return executeAction(result, event, exceptionHandler);
+        yield executeAction(result, event, exceptionHandler);
     } else {
-        return Rx.Observable.of(result)
+        yield result
     }
 }
