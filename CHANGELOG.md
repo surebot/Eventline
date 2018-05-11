@@ -1,3 +1,7 @@
+# v0.2.20
+
+- Fixes crash in the last version of eventline.
+
 # v0.2.19
 
 - Exposes `matches` function used for pattern matching logic in Eventline to enable ability to add own custom patterns.
