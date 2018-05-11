@@ -5,7 +5,7 @@
 
 import * as Rx from 'rxjs/Rx'
 import { executeAction } from './execute-action'
-import { matcher } from './matcher'
+import { matches } from './matches'
 
 /**
  * This class represents a route for which
@@ -85,7 +85,7 @@ export class Route {
      * @memberof Route
      */
     matches(event) {
-        var matchingFunctor = matcher(this.pattern)
+        var matchingFunctor = matches(this.pattern)
         return matchingFunctor(event)
     }
 

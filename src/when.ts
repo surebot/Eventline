@@ -1,4 +1,4 @@
-import { matcher } from './matcher'
+import { matches } from './matches'
 
 
 /**
@@ -13,7 +13,7 @@ import { matcher } from './matcher'
  */
 export function when(pattern, action) {
     return event => {
-        let matchingFunctor = matcher(pattern)
+        let matchingFunctor = matches(pattern)
 
         if (matchingFunctor(event)) {
             return action

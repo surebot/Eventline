@@ -270,3 +270,33 @@ eventline.on(patternA, patternB)
 If at least one of the patterns match an event then Eventline will use
 that route. This allows you to perform the same set of actions for
 multiple types of events.
+
+## Extending Patterns
+
+You can implement a way of extending custom syntaxes for patterns in Eventline.
+This is done by using a function that takes your custom pattern and transforms it into
+something Eventline recognizes.
+
+You will then pass this to the `matches` function in Eventline which will handle the
+default matching logic.
+
+Below we can see a function which allows a user to use math.js expressions in their patterns.
+
+```
+function MathMatcher(pattern) {
+    if (pattern instanceof String) {
+        return function(event) {
+            math.eval(pattern, event)
+        }
+    } else {
+        return matches(pattern)
+    }
+}
+
+eventline.on(MathMatcher("$age > 10"))
+```
+
+`matches` can only be used at the top level and unlike normal functions
+not used to match a only part of the event payload.
+
+Therefore you must always use your function on the whole payload.

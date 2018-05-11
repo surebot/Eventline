@@ -124,7 +124,7 @@ function RegExpMatcher(regexp) {
  * @param {boolean} topLevel - determines if we are at the top level of the pattern
  * @returns 
  */
-export function matcher(pattern, topLevel=true) {
+export function matches(pattern, topLevel=true) {
 
     if (pattern instanceof Array) {
       return ArrayMatcher(pattern, topLevel);
