@@ -1,7 +1,6 @@
 # v0.2.20
 
-- Exposes function used for pattern matching logic in Eventline,
-  to enable ability to add own custom patterns.
+- Exposes function used for pattern matching logic in Eventline to enable ability to add own custom patterns.
 
 # v0.2.19
 
