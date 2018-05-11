@@ -27,15 +27,15 @@ function ArrayMatcher(array, topLevel=true) {
       return matchingFunctor(event)
     });
 
-    const matches = results.filter(result => {
+    const resultMatches = results.filter(result => {
       var notMatch = (result === false)
       return !notMatch
     })
 
     if (topLevel) {
-      return (matches.length === array.length)
+      return (resultMatches.length === array.length)
     } else {
-      return (matches.length > 0)
+      return (resultMatches.length > 0)
     }
     
   };
@@ -87,12 +87,12 @@ function ObjectMatcher(pattern) {
       return [key, matcherFunctor(eventValue)]
     });
 
-    const matches = results.filter(([key, result]) => {
+    const resultMatches = results.filter(([key, result]) => {
       var notMatch = (result === false)
       return !notMatch
     })
 
-    return (matches.length === pairs.length)
+    return (resultMatches.length === pairs.length)
   }
 }
 

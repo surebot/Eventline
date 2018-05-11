@@ -1,5 +1,4 @@
-import { matches } from './matches'
-
+import { matches } from './matchers'
 
 /**
  * An action which only triggers a certain

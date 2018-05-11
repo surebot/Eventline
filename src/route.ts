@@ -5,7 +5,7 @@
 
 import * as Rx from 'rxjs/Rx'
 import { executeAction } from './execute-action'
-import { matches } from './matches'
+import { matches } from './matchers'
 
 /**
  * This class represents a route for which

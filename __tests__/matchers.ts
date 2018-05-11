@@ -1,4 +1,4 @@
-import { matches } from '../src/matches'
+import { matches } from '../src/matchers'
 import * as XRegExp from 'xregexp'
 
 test('If object matches then result should be true', () => {
