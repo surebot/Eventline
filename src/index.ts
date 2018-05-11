@@ -7,7 +7,7 @@ export * from './middleware'
 export * from './eventline'
 export * from './get-capture-groups'
 export * from './when'
-export * from './matches'
+export * from './matchers'
 
 /*
 Warn the consumer that Eventline only supports the new RxJS if we detect the old one
