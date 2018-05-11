@@ -1,3 +1,8 @@
+# v0.2.20
+
+- Exposes function used for pattern matching logic in Eventline,
+  to enable ability to add own custom patterns.
+
 # v0.2.19
 
 - Removes dependencies which were installed but were only needed for development of this package and not at runtime.

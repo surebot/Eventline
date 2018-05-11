@@ -120,8 +120,8 @@ function RegExpMatcher(regexp) {
  * This function will delegate to the relevant
  * matching logic based on the type of pattern.
  * 
- * @param {any} pattern 
- * @param {boolean} topLevel
+ * @param {any} pattern - pattern handle matching
+ * @param {boolean} topLevel - determines if we are at the top level of the pattern
  * @returns 
  */
 export function matcher(pattern, topLevel=true) {
