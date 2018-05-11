@@ -3,14 +3,6 @@
  * Copyright James Campbell 2017
  */
 
-function catchException(exceptionHandler: (exception: any, event: any) => void, event: any,  exception: any) {
-    if (exceptionHandler) {
-        exceptionHandler(exception, event)
-    }
-
-    return event
-}
-
 function isIterable(obj) {
 
     // checks for null and undefined
@@ -32,37 +24,31 @@ function isIterable(obj) {
  * @param {*} event 
  * @returns 
  */
-export function executeAction(action: any, event: any, exceptionHandler: (exception: any, event: any) => void) {
-    try {
+export function executeAction(action: any, event: any) {
 
-        if (result instanceof Promise) {
+    if (result instanceof Promise) {
 
-            result = result.then(result => {
-                return executeAction(result, event, exceptionHandler)
-            })
+        result = result.then(result => {
+            return executeAction(result, event)
+        })
 
-        } else if (isIterable(action)) {
+    } else if (isIterable(action)) {
 
-            var result: any = null
-            var currentEvent = event
+        var result: any = null
+        var currentEvent = event
 
-            for (var step of action) {
-                result = executeAction(step, currentEvent, exceptionHandler)
-                currentEvent = result
-            }
-
-        } else if (action instanceof Function) {
-            
-            var result = action(event)
-            result = executeAction(result, event, exceptionHandler)
-
-        } else {
-            var result = action
+        for (var step of action) {
+            result = executeAction(step, currentEvent)
+            currentEvent = result
         }
 
-    } catch (exception) {
-        console.error(exception)
-        return Promise.resolve(catchException(exceptionHandler, event, exception))
+    } else if (action instanceof Function) {
+        
+        var result = action(event)
+        result = executeAction(result, event)
+
+    } else {
+        var result = action
     }
 
     if (!result) {

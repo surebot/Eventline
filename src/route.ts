@@ -92,30 +92,15 @@ export class Route {
      * This method triggers the actions for this route
      * to be executed by passing them the event one by one.
      * 
-     * @param {any} event 
+     * @param {any} event
+     * @returns Promise 
      * @memberof Route
      */
     handle(event) {
-        this.subject.next(event)
-    }
-
-    /**
-     * This internal method builds the excution flow for the runtime
-     * and returns and observable for the router
-     * to consume and connect up to it's execution flow.
-     * 
-     * You should not call this for your project.
-     * 
-     * @returns 
-     * @memberof Route
-     */
-    toObservable(exceptionHandler: (exception: any, event: any) => void) {
-        console.log('Building execution model for ' + JSON.stringify(this.pattern) + '...')
-
-        return this.actions.reduce((observer, action) => {
-            return observer.flatMap(context => {
-                return executeAction(action, context, exceptionHandler)
+        return this.actions.reduce((promise, action, index, actions) => {
+            return promise.then(currentEvent => {
+                return executeAction(action, currentEvent)
             })
-        }, this.subject)
+        }, Promise.resolve(event))
     }
 }

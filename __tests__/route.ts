@@ -16,40 +16,38 @@ test('if pattern matches then matches should return true', () => {
   expect(route.matches({})).toBe(true);
 });
 
-// test('should execute action', () => {
-//   let actionCalled = false
-//   let route = new Route({});
+test('should execute action', () => {
+  let actionCalled = false
+  let route = new Route({});
 
-//   route.then(event => {
-//     actionCalled = true
-//     return event
-//   })
+  route.then(event => {
+    actionCalled = true
+    return event
+  })
 
-//   route.toObservable()
-//   .subscribe()
-//   route.handle({})
+  route.handle({})
+  .then(event => {
+    expect(actionCalled).toBe(true);
+  })
+});
 
-//   expect(actionCalled).toBe(true);
-// });
+test('should execute actions in order', () => {
+  let actionResults = []
+  let route = new Route({});
 
-// test('should execute actions in order', () => {
-//   let actionResults = []
-//   let route = new Route({});
-
-//   route
-//   .then(event => {
-//     actionResults.push(1)
-//     return event
-//   })
+  route
+  .then(event => {
+    actionResults.push(1)
+    return event
+  })
   
-//   route.then(event => {
-//     actionResults.push(2)
-//     return event
-//   })
+  route.then(event => {
+    actionResults.push(2)
+    return event
+  })
 
-//   route.toObservable()
-//   .subscribe()
-//   route.handle({})
-
-//   expect(actionResults).toEqual([1,2]);
-// });
+  route.handle({})
+  .then(event => {
+    expect(actionResults).toEqual([1,2]);
+  })
+});
