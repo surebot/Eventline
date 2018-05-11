@@ -19,7 +19,7 @@ import { XRegExp } from 'xregexp'
  */
 function ArrayMatcher(array, topLevel=true) {
   const matchingFunctors = array.map((pattern) => {
-    return matcher(pattern, topLevel)
+    return matches(pattern, topLevel)
   });
 
   return (event) => {
@@ -82,7 +82,7 @@ function ObjectMatcher(pattern) {
     const pairs = _.toPairs(pattern)
 
     const results = pairs.map(([key, pattern]) => {
-      const matcherFunctor = matcher(pattern, false)
+      const matcherFunctor = matches(pattern, false)
       const eventValue = _.get(event, key, null)
       return [key, matcherFunctor(eventValue)]
     });
