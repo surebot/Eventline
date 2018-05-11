@@ -1,3 +1,6 @@
+# v0.2.21
+- Adds support for generator actions
+
 # v0.2.20
 
 - Fixes crash in the last version of eventline.
