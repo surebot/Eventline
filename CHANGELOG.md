@@ -1,5 +1,9 @@
+# v0.3.0
+- Streamlines the library by dropping dependency on Rx.js in favour for generators.
+- Drops support for Ecmascript 5.
+
 # v0.2.21
-- Adds support for generator actions
+- Adds support for generator actions.
 
 # v0.2.20
 

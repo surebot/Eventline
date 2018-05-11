@@ -45,10 +45,10 @@ libraries.
 
 **Modern but well supported**
 Eventline is written in Typescript to ensure
-the code is stable and robust whilst still supporting ECMAScript 5 and 6.
+the code is stable and robust whilst still supporting ECMAScript 6.
 
 **Async Support**
-Eventline is built on top of RX.js and ES6 Generators making asynchronous
+Eventline is built on top of ES6 Generators making asynchronous
 behaviour a first class citizen without having to drop down into
 promise or callback hell.
 
