@@ -3,7 +3,6 @@
  * Copyright James Campbell 2017
  */
 
-import * as Rx from 'rxjs/Rx'
 import { executeAction } from './execute-action'
 import { matches } from './matchers'
 
@@ -28,15 +27,15 @@ export class Route {
      */
     public pattern: any
 
-    /**
-     * This subject is used internally to trigger
-     * the execution of the actions when a relevante
-     * event is recieved.
-     * 
-     * @type {Rx.Subject<any>}
-     * @memberof Route
-     */
-    private subject: Rx.Subject<any> = new Rx.Subject<any>()
+    // /**
+    //  * This subject is used internally to trigger
+    //  * the execution of the actions when a relevante
+    //  * event is recieved.
+    //  * 
+    //  * @type {Rx.Subject<any>}
+    //  * @memberof Route
+    //  */
+    // private subject: Rx.Subject<any> = new Rx.Subject<any>()
 
     /**
      * Tbe internal array of actions to perform for this

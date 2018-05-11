@@ -27,10 +27,10 @@
     "node": ">=4.5"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.68",
-    "@types/xregexp": "^3.0.28",
     "@types/jest": "^20.0.2",
+    "@types/lodash": "^4.14.68",
     "@types/node": "^8.0.4",
+    "@types/xregexp": "^3.0.28",
     "ava": "^0.20.0",
     "browserify": "^14.1.0",
     "codecov": "^2.2.0",
@@ -97,6 +97,7 @@
   },
   "dependencies": {
     "@reactivex/rxjs": "^5.4.1",
+    "co": "^4.6.0",
     "lodash": "^4.17.4",
     "tslib": "^1.6.0",
     "xregexp": "^3.2.0"

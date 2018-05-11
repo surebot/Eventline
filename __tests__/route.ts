@@ -1,20 +1,20 @@
-// import { Route } from '../src/route'
+import { Route } from '../src/route'
 
-// test('should store pattern', () => {
-//   let pattern = { text: /.+/ };
-//   let route = new Route(pattern);
+test('should store pattern', () => {
+  let pattern = { text: /.+/ };
+  let route = new Route(pattern);
 
-//   expect(route.pattern).toBe(pattern);
-// });
+  expect(route.pattern).toBe(pattern);
+});
 
-// test('if pattern matches then matches should return true', () => {
-//   let pattern = event => {
-//     return true
-//   }
-//   let route = new Route(pattern);
+test('if pattern matches then matches should return true', () => {
+  let pattern = event => {
+    return true
+  }
+  let route = new Route(pattern);
 
-//   expect(route.matches({})).toBe(true);
-// });
+  expect(route.matches({})).toBe(true);
+});
 
 // test('should execute action', () => {
 //   let actionCalled = false

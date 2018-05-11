@@ -30,25 +30,25 @@ export class Eventline {
         }
     }
 
-    /**
-     * This subject is used internally to initiate the
-     * execution of middleware used before a route's actions
-     * 
-     * @private
-     * @type {Rx.Subject<object>}
-     * @memberof Router
-     */
-    private beforeMiddlewareSubject: Rx.Subject<object> = new Rx.Subject<any>()
+    // /**
+    //  * This subject is used internally to initiate the
+    //  * execution of middleware used before a route's actions
+    //  * 
+    //  * @private
+    //  * @type {Rx.Subject<object>}
+    //  * @memberof Router
+    //  */
+    // private beforeMiddlewareSubject: Rx.Subject<object> = new Rx.Subject<any>()
 
-    /**
-     * This subject is used internally to initiate the
-     * execution of middleware used after a route's actions
-     * 
-     * @private
-     * @type {Rx.Subject<object>}
-     * @memberof Router
-     */
-    private afterMiddlewareSubject: Rx.Subject<object> = new Rx.Subject<any>()
+    // /**
+    //  * This subject is used internally to initiate the
+    //  * execution of middleware used after a route's actions
+    //  * 
+    //  * @private
+    //  * @type {Rx.Subject<object>}
+    //  * @memberof Router
+    //  */
+    // private afterMiddlewareSubject: Rx.Subject<object> = new Rx.Subject<any>()
 
     /**
      * An internal array used to hold all of the
@@ -79,7 +79,7 @@ export class Eventline {
     route(event: object) {
         console.log('Router Recieved: ' + JSON.stringify(event))
 
-        this.beforeMiddlewareSubject.next(event)
+        // this.beforeMiddlewareSubject.next(event)
     }
 
     /**
@@ -131,48 +131,48 @@ export class Eventline {
     start() {
         this.routes.forEach(this.listenToRoute, this)
 
-        this.buildMiddlewareChain("before", this.beforeMiddlewareSubject)
-        .subscribe(event => {
+        // this.buildMiddlewareChain("before", this.beforeMiddlewareSubject)
+        // .subscribe(event => {
 
-            try {
+        //     try {
                 
-                this.handleEvent(event)
+        //         this.handleEvent(event)
             
-            } catch(exception) {
+        //     } catch(exception) {
 
-                if (this.exceptionHandler) {
-                    this.exceptionHandler(exception, event)
-                }
-            }
-        })
+        //         if (this.exceptionHandler) {
+        //             this.exceptionHandler(exception, event)
+        //         }
+        //     }
+        // })
     }
 
-    /**
-     * An internal method for bulding a middleware execution
-     * flow for the runtime
-     * 
-     * @param {string} type 
-     * @param {Rx.Subject<any>} subject 
-     * @returns {Rx.Observable<any>} 
-     * @memberof Router
-     */
-    private buildMiddlewareChain(type: string, subject: Rx.Subject<any>): Rx.Observable<any> {
+    // /**
+    //  * An internal method for bulding a middleware execution
+    //  * flow for the runtime
+    //  * 
+    //  * @param {string} type 
+    //  * @param {Rx.Subject<any>} subject 
+    //  * @returns {Rx.Observable<any>} 
+    //  * @memberof Router
+    //  */
+    // private buildMiddlewareChain(type: string, subject: Rx.Subject<any>): Rx.Observable<any> {
 
-        let validMiddleware = this.middlewares.filter(middleware => {
-            return middleware[type]
-        })
+    //     let validMiddleware = this.middlewares.filter(middleware => {
+    //         return middleware[type]
+    //     })
 
-        return validMiddleware.reduce((currentObservable: Rx.Observable<any>, middleware: Middleware) => {
+    //     return validMiddleware.reduce((currentObservable: Rx.Observable<any>, middleware: Middleware) => {
 
-            let observable = currentObservable.flatMap(event => {
-                let middlewareFunction = middleware[type]
-                return executeAction(middlewareFunction.bind(middleware), event, this.exceptionHandler)
-            })
+    //         let observable = currentObservable.flatMap(event => {
+    //             let middlewareFunction = middleware[type]
+    //             return executeAction(middlewareFunction.bind(middleware), event, this.exceptionHandler)
+    //         })
 
-            return observable
+    //         return observable
                 
-        }, subject)
-    }
+    //     }, subject)
+    // }
 
     /**
      * An internal method for bulding a route execution

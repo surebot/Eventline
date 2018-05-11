@@ -1,97 +1,141 @@
 import { executeAction } from '../src/execute-action'
 
-// test('When action returns Promise execute it ', () => {
+test('When action returns Promise execute it ', () => {
 
-//     let promise = new Promise((resolve, reject) => {
-//         resolve(1)
-//     })
+    let value = 1
 
-//     let result = executeAction(event => {
-//         return promise
-//     }, null, null)
+    let promise = new Promise((resolve, reject) => {
+        resolve(1)
+    })
 
-//     expect(result.next()).toEqual(1)
-// });
+    let executor = executeAction(promise,  null, null)
+
+    executor.then(result => {
+        expect(result).toEqual(value)
+    })
+});
 
 test('When action returns function execute it', () => {
-    let value = 1
+    var value = 1
+    
     let functor = action => {
         return value
     }
+
     let executor = executeAction(event => {
         return functor
     }, null, null)
 
-    expect(executor.next().value).toEqual(1)
+    executor.then(result => {
+        expect(result).toEqual(value)
+    })
 });
 
-// test('When action returns generator execute it', () => {
-//     let events = []
+test('When action returns generator execute it', () => {
 
-//     let functorA = function*(action) {
-//         events.push(1)
-//     }
+    let functorB = function*(action) {
+        yield 5
+    }
 
-//     let functorB = function*(action) {
-//         yield functorA
-//         yield functorA
-//         yield functorA
-//         yield functorA
-//     }
+    let executor = executeAction(functorB, null, null)
 
-//     executeAction(functorB, null, null)
+    executor.then(result => {
+        expect(result).toEqual(5)
+    })
+});
 
-//     expect(events).toEqual([1, 1, 1, 1])
-// });
+test('When action returns generator execute sub generator', () => {
 
-// test('When action returns empty array do nothing', () => {
-//     executeAction(event => {
-//         return []
-//     }, null, null)
-// });
+    var events = []
 
-// test('When action returns array execute in order', () => {
-//     let events = [];
+    let functorA = function*(action) {
+        events.push(5)
+        yield events
+    }
 
-//     let functor = (value) => {
-//         return (event) => {
-//             events.push(value)
-//             return event
-//         }
-//     }
+    let functorB = function*(action) {
+        yield functorA
+        yield functorA
+        yield functorA
+        yield functorA
+    }
 
-//     let result = executeAction(event => {
-//         return [
-//             functor(1),
-//             functor(2)
-//         ]
-//     }, 1, null)
+    let executor = executeAction(functorB, null, null)
+    
+    executor.then(result => {
+        expect(events).toEqual([5,5,5,5])
+    })
+});
 
-//     result
-//     .subscribe(function(event) {
-//         expect(events).toEqual([1, 2])
-//     })
-// });
+test('When action returns void generator return event', () => {
+
+    var event = {}
+
+    let functorB = function*(action) {
+    }
+
+    let executor = executeAction(functorB, event, null)
+
+    executor.then(result => {
+        expect(result).toEqual(event);
+    })
+});
+
+test('When action returns empty array return event', () => {
+
+    let event = {}
+
+    var executor = executeAction(event => {
+        return []
+    }, event, null)
+
+    executor.then(result => {
+        expect(result).toEqual(event);
+    })
+});
+
+test('When action returns array execute in order', () => {
+    let events = [];
+
+    let functor = (value) => {
+        return (event) => {
+            events.push(value)
+            return event
+        }
+    }
+
+    let executor = executeAction(event => {
+        return [
+            functor(1),
+            functor(2)
+        ]
+    }, null, null)
+
+    executor.then(result => {
+        expect(events).toEqual([1, 2]);
+    })
+});
 
 
-// test('When passed array of actions execute in order', () => {
-//     let events = [];
+test('When passed array of actions execute in order', () => {
+    let events = [];
 
-//     let functor = (value) => {
-//         return (event) => {
-//             events.push(value)
-//             return event
-//         }
-//     }
+    let functor = (value) => {
+        return (event) => {
+            events.push(value)
+            return event
+        }
+    }
 
-//     let executor = executeAction([
-//         functor(1),
-//         functor(2)
-//     ], 1, null)
+    let executor = executeAction([
+        functor(1),
+        functor(2)
+    ], null, null)
 
-//     let results = Array.from(executor);
-//     expect(events).toEqual([1, 2])
-// });
+    executor.then(result => {
+        expect(events).toEqual([1, 2]);
+    })
+});
 
 test('When action returns value return value', () => {
     let value = 1
@@ -99,14 +143,18 @@ test('When action returns value return value', () => {
         return value
     }, null, null)
 
-    expect(executor.next().value).toEqual(value);
+    executor.then(result => {
+        expect(result).toEqual(value);
+    })
 });
 
 test('When action returns void return event', () => {
     let event = {}
     let executor = executeAction(event => {}, event, null)
 
-    expect(executor.next().value).toEqual(event);
+    executor.then(result => {
+        expect(result).toEqual(event);
+    })
 });
 
 test('When action returns undefined return event', () => {
@@ -115,7 +163,9 @@ test('When action returns undefined return event', () => {
         return undefined
     }, event, null)
 
-    expect(executor.next().value).toEqual(event);
+    executor.then(result => {
+        expect(result).toEqual(event);
+    })
 });
 
 test('When action returns null return event', () => {
@@ -124,5 +174,7 @@ test('When action returns null return event', () => {
         return null
     }, event, null)
 
-    expect(executor.next().value).toEqual(event);
+    executor.then(result => {
+        expect(result).toEqual(event);
+    })
 });

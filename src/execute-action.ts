@@ -3,22 +3,22 @@
  * Copyright James Campbell 2017
  */
 
-import * as Rx from 'rxjs/Rx'
-
-var GeneratorFunction = Object.getPrototypeOf(function*(){}).constructor;
-
 function catchException(exceptionHandler: (exception: any, event: any) => void, event: any,  exception: any) {
     if (exceptionHandler) {
         exceptionHandler(exception, event)
     }
 
-    return Rx.Observable.empty()
+    return event
 }
 
-function buildExceptionCatcher(exceptionHandler: (exception: any, event: any) => void, event: any) {
-    return function (exception) {
-        return catchException(exceptionHandler, event, exception)
+function isIterable(obj) {
+
+    // checks for null and undefined
+    if (obj == null) {
+        return false;
     }
+
+    return typeof obj[Symbol.iterator] === 'function';
 }
 
 /**
@@ -32,56 +32,42 @@ function buildExceptionCatcher(exceptionHandler: (exception: any, event: any) =>
  * @param {*} event 
  * @returns 
  */
-export function* executeAction(action: any, event: any, exceptionHandler: (exception: any, event: any) => void) {
+export function executeAction(action: any, event: any, exceptionHandler: (exception: any, event: any) => void) {
     try {
-        
-        if (!(action instanceof GeneratorFunction) && action instanceof Function) {
+
+        if (result instanceof Promise) {
+
+            result = result.then(result => {
+                return executeAction(result, event, exceptionHandler)
+            })
+
+        } else if (isIterable(action)) {
+
+            var result: any = null
+            var currentEvent = event
+
+            for (var step of action) {
+                result = executeAction(step, currentEvent, exceptionHandler)
+                currentEvent = result
+            }
+
+        } else if (action instanceof Function) {
+            
             var result = action(event)
+            result = executeAction(result, event, exceptionHandler)
+
         } else {
             var result = action
         }
 
     } catch (exception) {
         console.error(exception)
-        return catchException(exceptionHandler, event, exception)
+        return Promise.resolve(catchException(exceptionHandler, event, exception))
     }
 
     if (!result) {
-        yield event
-    // } else if (result instanceof Array) {
-
-    //     var currentEvent = event
-
-    //     for (var action of result) {
-    //         currentEvent = yield executeAction(action, currentEvent, exceptionHandler)
-    //     }
-
-    //     yield currentEvent
-
-    // } else if (result instanceof Promise) {
-
-    //     try {
-    //         result = yield result
-    //         return result
-
-    //     } catch(exception) {
-    //         var catcher = buildExceptionCatcher(exceptionHandler, event)
-    //         return catchException(exceptionHandler, event, exception)
-    //     }
-        
-    // } else if (result instanceof GeneratorFunction) {
-
-    //     var lastResult = result
-
-    //     for (let nextResult of result(event)) { 
-    //         lastResult = executeAction(nextResult, event, exceptionHandler) 
-    //     }
-
-    //     return lastResult
-
-    } else if (result instanceof Function) {
-        yield executeAction(result, event, exceptionHandler);
+        return Promise.resolve(event)
     } else {
-        yield result
+        return Promise.resolve(result)
     }
 }

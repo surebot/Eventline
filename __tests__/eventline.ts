@@ -1,50 +1,50 @@
-// import { Eventline } from '../src/eventline'
-// import { Middleware } from '../src/middleware' 
+import { Eventline } from '../src/eventline'
+import { Middleware } from '../src/middleware' 
 
-// export class FakeMiddleware implements Middleware {
+export class FakeMiddleware implements Middleware {
 
-//     actionResults: Array<any>
-//     beforeMiddlewareValue = 1
-//     afterMiddlewareValue = 3
+    actionResults: Array<any>
+    beforeMiddlewareValue = 1
+    afterMiddlewareValue = 3
 
-//     constructor(actionResults) {
-//         this.actionResults = actionResults
-//     }
+    constructor(actionResults) {
+        this.actionResults = actionResults
+    }
 
-//     before(event: any) {
-//         this.actionResults.push(this.beforeMiddlewareValue)
-//         return event
-//     }
+    before(event: any) {
+        this.actionResults.push(this.beforeMiddlewareValue)
+        return event
+    }
 
-//     after(event: any) {
-//         this.actionResults.push(this.afterMiddlewareValue)
-//         return event
-//     }
-// }
+    after(event: any) {
+        this.actionResults.push(this.afterMiddlewareValue)
+        return event
+    }
+}
 
-// test('should consume component', () => {
-//   let componentConsumed = false;
-//   let eventline = new Eventline();
-//   let component = eventline => {
-//     componentConsumed = true
-//   }
+test('should consume component', () => {
+  let componentConsumed = false;
+  let eventline = new Eventline();
+  let component = eventline => {
+    componentConsumed = true
+  }
 
-//   eventline.use(component)
+  eventline.use(component)
 
-//   expect(componentConsumed).toBe(true);
-// });
+  expect(componentConsumed).toBe(true);
+});
 
-// test('should pass eventline to consumed component', () => {
-//   let passedInEventline = false;
-//   let eventline = new Eventline();
-//   let component = eventline => {
-//     passedInEventline = eventline
-//   }
+test('should pass eventline to consumed component', () => {
+  let passedInEventline = false;
+  let eventline = new Eventline();
+  let component = eventline => {
+    passedInEventline = eventline
+  }
 
-//   eventline.use(component)
+  eventline.use(component)
 
-//   expect(passedInEventline).toBe(eventline);
-// });
+  expect(passedInEventline).toBe(eventline);
+});
 
 // test('should build routes', () => {
 //   let threadTriggered = false;
