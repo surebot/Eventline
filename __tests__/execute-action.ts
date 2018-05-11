@@ -31,6 +31,25 @@ test('When action returns function execute it', () => {
     expect(result instanceof Rx.Observable).toEqual(true)
 });
 
+test('When action returns generator execute it', () => {
+    let events = []
+
+    let functorA = function*(action) {
+        events.push(1)
+    }
+
+    let functorB = function*(action) {
+        yield functorA
+        yield functorA
+        yield functorA
+        yield functorA
+    }
+
+    executeAction(functorB, null, null)
+
+    expect(events).toEqual([1, 1, 1, 1])
+});
+
 test('When action returns empty array do nothing', () => {
     executeAction(event => {
         return []

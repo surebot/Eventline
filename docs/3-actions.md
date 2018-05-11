@@ -63,7 +63,7 @@ onto onto the next action. Since this is built using observables this should
 be non-blocking. Allowing your bot to handle other events that may
 arrive.
 
-Becuase Eventline gurantees order, the next action will only execute
+Because Eventline gurantees order, the next action will only execute
 once this action issues the `onNext` and `onComplete` methods.
 
 Make sure when sending a `onNext` event that it passes on the modified event and not some other kind of object.
@@ -76,6 +76,23 @@ If you are used to Promises or ES7's async functions, then Eventline also suppor
 Additionally since async actions have more control over flow of our route
 we can simply return `Rx.observable.empty()` to say that there wasn't an error
 but the route shouldn't do anything further although we don't reccomend it.
+
+## Generator Functions
+
+Eventline also supports the use of generator functions instead of Rx.js for those using ES5.
+
+You can use the `yield` o carry on with the next action
+or you can yield multiple times with another action you want to execute
+and Eventline will execute them in the same order.
+
+Eventline will always use the latest result yielded by your generator but its reccomended
+you only call it once for better performance.
+
+
+## Grouped Actions
+
+Eventline also allows actions to return an array of actions for eventline to execute
+in the same order.
 
 ## Built In Actions
 

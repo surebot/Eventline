@@ -5,6 +5,8 @@
 
 import * as Rx from 'rxjs/Rx'
 
+var GeneratorFunction = Object.getPrototypeOf(function*(){}).constructor;
+
 function catchException(exceptionHandler: (exception: any, event: any) => void, event: any,  exception: any) {
     if (exceptionHandler) {
         exceptionHandler(exception, event)
@@ -33,7 +35,7 @@ function buildExceptionCatcher(exceptionHandler: (exception: any, event: any) =>
 export function executeAction(action: any, event: any, exceptionHandler: (exception: any, event: any) => void) {
     try {
         
-        if (action instanceof Function) {
+        if (!(action instanceof GeneratorFunction) && action instanceof Function) {
             var result = action(event)
         } else {
             var result = action
@@ -74,6 +76,16 @@ export function executeAction(action: any, event: any, exceptionHandler: (except
         return result.catch(buildExceptionCatcher(exceptionHandler, event))        
     } else if (result instanceof Promise) {
         return Rx.Observable.fromPromise(result).catch(buildExceptionCatcher(exceptionHandler, event)) 
+    } else if (result instanceof GeneratorFunction) {
+
+        var lastResult = result
+
+        for (let nextResult of result(event)) { 
+            lastResult = executeAction(nextResult, event, exceptionHandler) 
+        }
+
+        return lastResult
+
     } else if (result instanceof Function) {
         return executeAction(result, event, exceptionHandler);
     } else {
