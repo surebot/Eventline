@@ -20,7 +20,7 @@ test('When action returns Array Promise execute it ', () => {
     let value = 1
 
     let promise = new Promise((resolve, reject) => {
-        resolve([1])
+        resolve([1, 1])
     })
 
     let executor = executeAction(promise,  null)

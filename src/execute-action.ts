@@ -26,9 +26,9 @@ function isIterable(obj) {
  */
 export function executeAction(action: any, event: any) {
 
-    if (result instanceof Promise) {
+    if (action instanceof Promise) {
 
-        result = result.then(action => {
+        result = action.then(action => {
             return executeAction(action, event)
         })
 
@@ -38,6 +38,7 @@ export function executeAction(action: any, event: any) {
 
         for (var step of action) {
             result = executeAction(step, result)
+            console.log(result)
         }
 
     } else if (action instanceof Function) {
