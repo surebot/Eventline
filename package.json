@@ -96,7 +96,6 @@
     ]
   },
   "dependencies": {
-    "@reactivex/rxjs": "^5.4.1",
     "lodash": "^4.17.4",
     "tslib": "^1.6.0",
     "xregexp": "^3.2.0"

@@ -1,3 +1,7 @@
+# v0.3.3
+
+- Removes `rxjs` dependency is no longer used.
+
 # v0.3.2
 
 - Removes `co` dependency which was never used
