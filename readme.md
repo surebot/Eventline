@@ -22,14 +22,6 @@ on(event)
 .then(this)
 .then(that)
 ```
-## API Reference
-
-| Functions     | Description   |
-| ------------- | ------------- |
-| start()       | Content Cell  |
-| route()       | Content Cell  |
-| on()          | Content Cell  |
-
 
 ## Features
 

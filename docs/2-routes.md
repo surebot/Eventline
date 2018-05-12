@@ -9,17 +9,12 @@ eventline.on({
     type: 'message'
 })
 .then(DoSomething)
-
-eventline.start()
 ```
 
 When we get an event with a key of `type` set to the value of `message` then this
 route will trigger the `DoSomething` action.
 
 We will cover actions in the next tutorial.
-
-When declaring routes these should always occur before the `start` method as
-this is what builds them ready to be executed at run time.
 
 The priority of each route is determined in the order in which you declare them, ones
 defined earlier in your code will be checked first to see if the event matches the

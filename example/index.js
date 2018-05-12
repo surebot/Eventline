@@ -40,15 +40,6 @@ eventline.on({
 
 // Fourth Step
 // ==========
-// We tell the eventline to start so it can build the internal models used to
-// run the routes
-//
-// Nothing will happen without this step
-//
-eventline.start()
-
-// Fifth Step
-// ==========
 // Pass our eventline some events to handle, this would be in our webhook normally.
 // Here we pass in what the user types
 //
