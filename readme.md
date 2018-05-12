@@ -46,8 +46,9 @@ promise or callback hell.
 
 **Lightweight**
 Eventline is the Router in the ERA (Event Source, Router, Action) Architecture.
-It's a lightweight complement to your own custom code or frameworks such as a Botpress or Botkit
-rather than yet another bot framework.
+It's a lightweight complement to your own custom code or frameworks such as a Botpress or Botkit rather than yet another bot framework.
+
+If you don't believe us, It has 3 dependencies in total.
 
 **Stateless**
 Everything is built to promote a stateless architecture, each action and middleware built
