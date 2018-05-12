@@ -30,26 +30,6 @@ export class Eventline {
         }
     }
 
-    // /**
-    //  * This subject is used internally to initiate the
-    //  * execution of middleware used before a route's actions
-    //  * 
-    //  * @private
-    //  * @type {Rx.Subject<object>}
-    //  * @memberof Router
-    //  */
-    // private beforeMiddlewareSubject: Rx.Subject<object> = new Rx.Subject<any>()
-
-    // /**
-    //  * This subject is used internally to initiate the
-    //  * execution of middleware used after a route's actions
-    //  * 
-    //  * @private
-    //  * @type {Rx.Subject<object>}
-    //  * @memberof Router
-    //  */
-    // private afterMiddlewareSubject: Rx.Subject<object> = new Rx.Subject<any>()
-
     /**
      * An internal array used to hold all of the
      * registered middleware for this router
@@ -79,7 +59,16 @@ export class Eventline {
     route(event: object) {
         console.log('Router Recieved: ' + JSON.stringify(event))
 
-        // this.beforeMiddlewareSubject.next(event)
+        return this.runMiddleware("before", event)
+        .then(event => {
+            return this.handleEvent(event)
+        })
+        .then(event => {
+            return this.runMiddleware("after", event)
+        })
+        .catch(exception => {
+            return this.exceptionHandler(exception, event)
+        })
     }
 
     /**
@@ -123,69 +112,28 @@ export class Eventline {
     }
 
     /**
-     * Initiates the router and builds the routes
-     * for the runtime
-     * 
-     * @memberof Router
-     */
-    start() {
-        this.routes.forEach(this.listenToRoute, this)
-
-        // this.buildMiddlewareChain("before", this.beforeMiddlewareSubject)
-        // .subscribe(event => {
-
-        //     try {
-                
-        //         this.handleEvent(event)
-            
-        //     } catch(exception) {
-
-        //         if (this.exceptionHandler) {
-        //             this.exceptionHandler(exception, event)
-        //         }
-        //     }
-        // })
-    }
-
-    // /**
-    //  * An internal method for bulding a middleware execution
-    //  * flow for the runtime
-    //  * 
-    //  * @param {string} type 
-    //  * @param {Rx.Subject<any>} subject 
-    //  * @returns {Rx.Observable<any>} 
-    //  * @memberof Router
-    //  */
-    // private buildMiddlewareChain(type: string, subject: Rx.Subject<any>): Rx.Observable<any> {
-
-    //     let validMiddleware = this.middlewares.filter(middleware => {
-    //         return middleware[type]
-    //     })
-
-    //     return validMiddleware.reduce((currentObservable: Rx.Observable<any>, middleware: Middleware) => {
-
-    //         let observable = currentObservable.flatMap(event => {
-    //             let middlewareFunction = middleware[type]
-    //             return executeAction(middlewareFunction.bind(middleware), event, this.exceptionHandler)
-    //         })
-
-    //         return observable
-                
-    //     }, subject)
-    // }
-
-    /**
-     * An internal method for bulding a route execution
+     * An internal method for running middleware
      * flow for the runtime
      * 
-     * @param {Route} route 
+     * @param {string} type 
+     * @param {any} event 
+     * @returns {Promise} 
      * @memberof Router
      */
-    private listenToRoute(route: Route) {
-        this.buildMiddlewareChain("after", route.toObservable(this.exceptionHandler))
-        .subscribe((event) => {
-            this.afterMiddlewareSubject.next(event)
+    private runMiddleware(type: string, event: any): Promise<any>{
+
+        let validMiddleware = this.middlewares.filter(middleware => {
+            return middleware[type]
         })
+
+        return validMiddleware.reduce((promise, middleware) => {
+
+            return promise.then(currentEvent => {
+                let middlewareFunction = middleware[type]
+                return executeAction(middlewareFunction.bind(middleware), event)
+            })
+                
+        }, Promise.resolve(event))
     }
 
     /**
@@ -193,14 +141,15 @@ export class Eventline {
      * finding a matching router and triggering it.
      * 
      * @param {*} event 
+     * @return Promise
      * @memberof Router
      */
     private handleEvent(event: any) {
         var matchingRoute = this.routeForEvent(event)
             
         if (matchingRoute) {
-            event.pattern = matchingRoute.pattern
-            matchingRoute.handle(event)
+           event.pattern = matchingRoute.pattern
+           return matchingRoute.handle(event)
         } else {
             throw "No matching route found"
         }

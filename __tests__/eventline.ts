@@ -46,255 +46,262 @@ test('should pass eventline to consumed component', () => {
   expect(passedInEventline).toBe(eventline);
 });
 
-// test('should build routes', () => {
-//   let threadTriggered = false;
-//   let eventline = new Eventline();
-//   let pattern = {};
+test('should build routes', () => {
+  let threadTriggered = false;
+  let eventline = new Eventline();
+  let pattern = {};
 
-//   eventline.on(pattern)
-//   .then(event => {
-//     threadTriggered = true
-//     return event
-//   })
+  eventline.on(pattern)
+  .then(event => {
+    threadTriggered = true
+    return event
+  })
+  
+  return eventline.route(Object.assign({}, pattern))
+  .then(event => {
+    expect(threadTriggered).toBe(true);
+  })
+});
 
-//   eventline.start()
-//   eventline.route(Object.assign({}, pattern))
+test('should execute middleware', () => {
+  let actionResults = [];
+  let eventline = new Eventline();
+  let pattern = {};
+  let middleware = new FakeMiddleware(actionResults)
 
-//   expect(threadTriggered).toBe(true);
-// });
+  eventline.registerMiddleware(middleware)
 
-// test('should execute middleware', () => {
-//   let actionResults = [];
-//   let eventline = new Eventline();
-//   let pattern = {};
-//   let middleware = new FakeMiddleware(actionResults)
+  eventline.on(pattern)
+  .then(event => {
+    actionResults.push(2)
+    return event
+  })
 
-//   eventline.registerMiddleware(middleware)
+  return eventline.route(Object.assign({}, pattern))
+  .then(event => {
+    expect(actionResults).toEqual([
+      middleware.beforeMiddlewareValue,
+      2,
+      middleware.afterMiddlewareValue]);
+  })
+});
 
-//   eventline.on(pattern)
-//   .then(event => {
-//     actionResults.push(2)
-//     return event
-//   })
+test('should handle middleware with missing functions', () => {
+  let eventline = new Eventline();
+  eventline.registerMiddleware({})
 
-//   eventline.start()
-//   eventline.route(Object.assign({}, pattern))
+  eventline.on({})
+  eventline.route({})
+});
 
-//   expect(actionResults).toEqual([
-//     middleware.beforeMiddlewareValue,
-//     2,
-//     middleware.afterMiddlewareValue]);
-// });
-
-// test('should handle middleware with missing functions', () => {
-//   let eventline = new Eventline();
-//   eventline.registerMiddleware({})
-
-//   eventline.on({})
-//   eventline.start()
-//   eventline.route({})
-// });
-
-// test('should execute middleware after one with missing functions', () => {
-//   let beforeMiddlewareTriggered = false;
-//   let afterMiddlewareTriggered = false;
-//   let eventline = new Eventline();
+test('should execute middleware after one with missing functions', () => {
+  let beforeMiddlewareTriggered = false;
+  let afterMiddlewareTriggered = false;
+  let eventline = new Eventline();
  
-//   eventline.registerMiddleware({})
-//   eventline.registerMiddleware({
-//     before: context => {
-//       beforeMiddlewareTriggered = true
-//     }
-//   })
-//   eventline.registerMiddleware({
-//     after: context => {
-//       afterMiddlewareTriggered = true
-//     }
-//   })
+  eventline.registerMiddleware({})
+  eventline.registerMiddleware({
+    before: context => {
+      beforeMiddlewareTriggered = true
+    }
+  })
+  eventline.registerMiddleware({
+    after: context => {
+      afterMiddlewareTriggered = true
+    }
+  })
 
-//   eventline.on({})
-//   eventline.start()
-//   eventline.route({})
+  eventline.on({})
+  
+  return eventline.route({})
+  .then(event => {
+    expect(beforeMiddlewareTriggered).toEqual(true)
+    expect(afterMiddlewareTriggered).toEqual(true)
+  })
+});
 
-//   expect(beforeMiddlewareTriggered).toEqual(true)
-//   expect(afterMiddlewareTriggered).toEqual(true)
-// });
+test('should execute the first matching route only', () => {
+  let actionResults = [];
+  let eventline = new Eventline();
+  let pattern = {};
 
-// test('should execute the first matching route only', () => {
-//   let actionResults = [];
-//   let eventline = new Eventline();
-//   let pattern = {};
+  eventline.on(pattern)
+  .then(event => {
+    actionResults.push(1)
+    return event
+  })
 
-//   eventline.on(pattern)
-//   .then(event => {
-//     actionResults.push(1)
-//     return event
-//   })
+  eventline.on(pattern)
+  .then(event => {
+    actionResults.push(2)
+    return event
+  })
 
-//   eventline.on(pattern)
-//   .then(event => {
-//     actionResults.push(2)
-//     return event
-//   })
+  return eventline.route(Object.assign({}, pattern))
+  .then(event => {
+    expect(actionResults).toEqual([1]);
+  })
+});
 
-//   eventline.start()
-//   eventline.route(Object.assign({}, pattern))
+test('should capture any exception', () => {
+  let eventline = new Eventline();
+  let pattern = {};
 
-//   expect(actionResults).toEqual([1]);
-// });
+  eventline.on(pattern)
+  .then(event => {
+    throw "An Error"
+  })
 
-// test('should capture any exception', () => {
-//   let eventline = new Eventline();
-//   let pattern = {};
+  return eventline.route(Object.assign({}, pattern))
+});
 
-//   eventline.on(pattern)
-//   .then(event => {
-//     throw "An Error"
-//   })
+test('should call exception handler on any exception', () => {
+  let eventline = new Eventline();
+  let pattern = {};
+  let exception = "An Error"
 
-//   eventline.start()
-//   eventline.route(Object.assign({}, pattern))
-// });
+  eventline.exceptionHandler = jest.fn();
 
-// test('should call exception handler on any exception', () => {
-//   let eventline = new Eventline();
-//   let pattern = {};
-//   let exception = "An Error"
+  eventline.on(pattern)
+  .then(event => {
+    throw exception
+  })
+  
+  return eventline.route(Object.assign({}, pattern))
+  .then(event => {
+    expect(eventline.exceptionHandler).toBeCalledWith(exception, {
+      pattern: pattern
+    })
+  })
+});
 
-//   eventline.exceptionHandler = jest.fn();
+test('handle no matching routes as an error', () => {
+  let eventline = new Eventline();
+  let event = {};
 
-//   eventline.on(pattern)
-//   .then(event => {
-//     throw exception
-//   })
+  eventline.exceptionHandler = jest.fn();
 
-//   eventline.start()
-//   eventline.route(Object.assign({}, pattern))
+  eventline.route(event)
+  .then(_ => {
+    expect(eventline.exceptionHandler).toBeCalledWith("No matching route found", event)
+  })
+});
 
-//   expect(eventline.exceptionHandler).toBeCalledWith(exception, {
-//     pattern: pattern
-//   })
-// });
+test('continue handling events after an error', () => {
+  let actionResults = [];
+  let eventline = new Eventline();
+  let pattern = {};
 
-// test('handle no matching routes as an error', () => {
-//   let eventline = new Eventline();
-//   let event = {};
+  eventline.on(pattern)
+  .then(event => {
+    actionResults.push(1)
+    throw "An Error"
+  })
 
-//   eventline.exceptionHandler = jest.fn();
+  return eventline.route(Object.assign({}, pattern))
+  .then(event => {
+    return eventline.route(Object.assign({}, pattern))
+  })
+  .then(event => {
+    expect(actionResults).toEqual([1, 1]);
+  })
+});
 
-//   eventline.start()
-//   eventline.route(event)
+test('handlle future events once after an error', () => {
+  let actionResults = [];
+  let eventline = new Eventline();
+  let pattern = { 'pattern': 'A' };
+  let patternB = { 'pattern': 'B' };
 
-//   expect(eventline.exceptionHandler).toBeCalledWith("No matching route found", event)
-// });
+  eventline.on(pattern)
+  .then(event => {
+    actionResults.push(1)
+    throw "An Error"
+  })
 
-// test('continue handling events after an error', () => {
-//   let actionResults = [];
-//   let eventline = new Eventline();
-//   let pattern = {};
+  eventline.on(patternB)
+  .then(event => {
+    actionResults.push(2)
+    return event
+  })
 
-//   eventline.on(pattern)
-//   .then(event => {
-//     actionResults.push(1)
-//     throw "An Error"
-//   })
+  return eventline.route(Object.assign({}, pattern))
+  .then(event => {
+    return eventline.route(Object.assign({}, patternB))
+  })
+  .then(event => {
+    expect(actionResults).toEqual([1, 2]);
+  })
+});
 
-//   eventline.start()
-//   eventline.route(Object.assign({}, pattern))
-//   eventline.route(Object.assign({}, pattern))
+test('should execute the first matching route only after an error', () => {
+  let actionResults = [];
+  let eventline = new Eventline();
+  let pattern = {};
 
-//   expect(actionResults).toEqual([1, 1]);
-// });
+  eventline.on(pattern)
+  .then(event => {
+    actionResults.push(1)
+    throw "An Error"
+  })
 
-// test('handlle future events once after an error', () => {
-//   let actionResults = [];
-//   let eventline = new Eventline();
-//   let pattern = { 'pattern': 'A' };
-//   let patternB = { 'pattern': 'B' };
+  eventline.on(pattern)
+  .then(event => {
+    actionResults.push(2)
+  })
 
-//   eventline.on(pattern)
-//   .then(event => {
-//     actionResults.push(1)
-//     throw "An Error"
-//   })
+  return eventline.route(Object.assign({}, pattern))
+  .then(event => {
+    return eventline.route(Object.assign({}, pattern))
+  })
+  .then(event => {
+    expect(actionResults).toEqual([1, 1]);
+  })
+});
 
-//   eventline.on(patternB)
-//   .then(event => {
-//     actionResults.push(2)
-//     return event
-//   })
+test('stop excuting actions after an error', () => {
+  let actionResults = [];
+  let eventline = new Eventline();
+  let pattern = {};
 
-//   eventline.start()
-//   eventline.route(Object.assign({}, pattern))
-//   eventline.route(Object.assign({}, patternB))
+  eventline.on(pattern)
+  .then(event => {
+    actionResults.push(1)
+    throw "An Error"
+  })
+  .then(event => {
+    actionResults.push(2)
+    return event
+  })
 
-//   expect(actionResults).toEqual([1, 2]);
-// });
+  return eventline.route(Object.assign({}, pattern))
+  .then(event => {
+    expect(actionResults).toEqual([1]);
+  })
+});
 
-// test('should execute the first matching route only after an error', () => {
-//   let actionResults = [];
-//   let eventline = new Eventline();
-//   let pattern = {};
+test('should execute route if at least one pattern matches', () => {
+  let actionResults = [];
+  let eventline = new Eventline();
+  let patternA = {
+    value: 1
+  };
 
-//   eventline.on(pattern)
-//   .then(event => {
-//     actionResults.push(1)
-//     throw "An Error"
-//   })
+  let patternB = {
+    value: 2
+  };
 
-//   eventline.on(pattern)
-//   .then(event => {
-//     actionResults.push(2)
-//   })
+  eventline.on(patternA, patternB)
+  .then(event => {
+    actionResults.push(1)
+    return event
+  })
 
-//   eventline.start()
-//   eventline.route(Object.assign({}, pattern))
-//   eventline.route(Object.assign({}, pattern))
-
-//   expect(actionResults).toEqual([1, 1]);
-// });
-
-// test('stop excuting actions after an error', () => {
-//   let actionResults = [];
-//   let eventline = new Eventline();
-//   let pattern = {};
-
-//   eventline.on(pattern)
-//   .then(event => {
-//     actionResults.push(1)
-//     throw "An Error"
-//   })
-//   .then(event => {
-//     actionResults.push(2)
-//     return event
-//   })
-
-//   eventline.start()
-//   eventline.route(Object.assign({}, pattern))
-
-//   expect(actionResults).toEqual([1]);
-// });
-
-// test('should execute route if at least one pattern matches', () => {
-//   let actionResults = [];
-//   let eventline = new Eventline();
-//   let patternA = {
-//     value: 1
-//   };
-
-//   let patternB = {
-//     value: 2
-//   };
-
-//   eventline.on(patternA, patternB)
-//   .then(event => {
-//     actionResults.push(1)
-//     return event
-//   })
-
-//   eventline.start()
-//   eventline.route(Object.assign({}, patternA))
-//   eventline.route(Object.assign({}, patternB))
-
-//   expect(actionResults).toEqual([1,1]);
-// });
+  return eventline.route(Object.assign({}, patternA))
+  .then(event => {
+    return eventline.route(Object.assign({}, patternB))
+  })
+  .then(event => {
+    expect(actionResults).toEqual([1, 1]);
+  })
+});
