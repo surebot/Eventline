@@ -133,7 +133,6 @@ test('When action returns function generator execute it', () => {
 
     let functorB = function*(action) {
         yield () => {
-            console.log('Executed Me Brah')
             return 5
         }
     }
