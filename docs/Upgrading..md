@@ -8,3 +8,6 @@ Please consult the changelog for details.
 Since v0.3 we've dropped native support for Rx.js, if you want to use your
 existing Rx.js actions you should convert them to ES6 generators or ES7
 async functions.
+
+You now no longer need to call `start` to start eventline and this function has
+been removed.

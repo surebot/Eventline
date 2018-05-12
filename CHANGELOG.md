@@ -1,3 +1,7 @@
+# v0.3.2
+
+- Removes `co` dependency which was never used
+
 # v0.3.1
 
 - Fixes certain conditions in which generators wern't handled correctly.
