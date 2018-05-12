@@ -37,41 +37,37 @@ a eventline receives.
 ## Asyncronous Actions
 
 Eventually your bot will need to do something in the background such as
-access a database or make an api call. This requires a asyncronous action.
+access a database or make an api call. You can simply do this by either returning
+a promise, imlementing your action as a generator or as a async/await function.
 
-Eventline is built ontop of ES6 Generators. That way it avoids common issues with callback and promise hell. In an upcoming
-version of Javascript this will be a first-class citizen.
-
-```
-function* DoSomethingAsync(event) {
-    sleep(1000)
-    yield event
-}
-```
-
-In the example above, the action waits 1 second before passing the event
-onto onto the next action. Since this is built using generators this should
-be non-blocking. Allowing your bot to handle other events that may
-arrive.
-
-Because Eventline gurantees order, the next action will only execute
-once this action has finished executing all of it's `yield` statements.
-
-Make sure when sending a `yield` event that it passes on the modified event and not some other kind of object.
-
-If we encountered any kind of error and wanted to stop execution of the next
-actions we would simply throw an execption like normal.
-
-Additionally since async actions have more control over flow of our route
-we can simply never call `yield` to say that there wasn't an error
-but the route shouldn't do anything further.
-
-Although normally this should normally be avoided.
+When using generators please ensure they complete or eventline will deadlock waiting
+for it.
 
 ## Grouped Actions
 
 Eventline also allows actions to return an array of actions for eventline to execute
 in the same order.
+
+```
+function Countdown(event) {
+    return [
+        SayOne,
+        SayTwo,
+        SayThree
+    ]
+}
+```
+
+For generators you can yield other actions to be executed instead of returning this
+array.
+
+```
+function* Countdown(event) {
+    yield SayOne
+    yield SayTwo
+    yield SayThree
+}
+```
 
 ## Built In Actions
 

@@ -40,7 +40,7 @@ Eventline is written in Typescript to ensure
 the code is stable and robust whilst still supporting ECMAScript 5.
 
 **Async Support**
-Eventline is built on top of ES6 Generators making asynchronous
+Eventline is built on top of ES5 Promises making asynchronous
 behaviour a first class citizen without having to drop down into
 promise or callback hell.
 

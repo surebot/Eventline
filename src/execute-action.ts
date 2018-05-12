@@ -3,6 +3,8 @@
  * Copyright James Campbell 2017
  */
 
+var GeneratorFunction = (function*(){yield undefined;}).constructor;
+
 function isIterable(obj) {
 
     // checks for null and undefined
@@ -26,7 +28,27 @@ function isIterable(obj) {
  */
 export function executeAction(action: any, event: any) {
 
-    if (action instanceof Promise) {
+    var result: any = event
+
+    if (action instanceof GeneratorFunction) {
+ 
+       var generator = action(event);
+       var lastIteration: any = null;
+       var done = false;
+       var value = undefined;
+
+       while(!done) {
+         lastIteration = generator.next()
+         value = lastIteration.value
+
+         if (value !== undefined) {
+            result = executeAction(value, event)
+         }
+
+         done = lastIteration.done
+       }
+
+    } else if (action instanceof Promise) {
 
         result = action.then(action => {
             return executeAction(action, event)
@@ -34,20 +56,17 @@ export function executeAction(action: any, event: any) {
 
     } else if (isIterable(action)) {
 
-        var result: any = event
-
         for (var step of action) {
             result = executeAction(step, result)
-            console.log(result)
         }
 
     } else if (action instanceof Function) {
         
-        var result = action(event)
+        result = action(event)
         result = executeAction(result, event)
 
     } else {
-        var result = action
+        result = action
     }
 
     if (!result) {

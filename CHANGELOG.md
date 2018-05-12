@@ -1,9 +1,15 @@
+# v0.3.1
+
+- Fixes certain conditions in which generators wern't handled correctly.
+
 # v0.3.0
+
 - Streamlines the library by dropping dependency on Rx.js in favour for generators.
 - The `route` method now returns a promise you can use to know when eventline has finished handling an event.
 - The `start` method is no longer needed to start eventline handling events.
 
 # v0.2.21
+
 - Adds support for generator actions.
 
 # v0.2.20
