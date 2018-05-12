@@ -28,18 +28,16 @@ export function executeAction(action: any, event: any) {
 
     if (result instanceof Promise) {
 
-        result = result.then(result => {
-            return executeAction(result, event)
+        result = result.then(action => {
+            return executeAction(action, event)
         })
 
     } else if (isIterable(action)) {
 
-        var result: any = null
-        var currentEvent = event
+        var result: any = event
 
         for (var step of action) {
-            result = executeAction(step, currentEvent)
-            currentEvent = result
+            result = executeAction(step, result)
         }
 
     } else if (action instanceof Function) {
