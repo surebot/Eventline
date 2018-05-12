@@ -43,6 +43,9 @@ a promise, imlementing your action as a generator or as a async/await function.
 When using generators please ensure they complete or eventline will deadlock waiting
 for it.
 
+If you wish to use another async library like RX.js, you can as long as
+you convert them into a generator or promise when passing them to Eventline.
+
 ## Grouped Actions
 
 Eventline also allows actions to return an array of actions for eventline to execute
