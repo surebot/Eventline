@@ -1,6 +1,6 @@
 import { executeAction } from '../src/execute-action'
 
-test('When action returns Promise execute it ', () => {
+test('When action returns Value Promise execute it ', () => {
 
     let value = 1
 
@@ -15,7 +15,39 @@ test('When action returns Promise execute it ', () => {
     })
 });
 
-test('When action returns function execute it', () => {
+test('When action returns Array Promise execute it ', () => {
+
+    let value = 1
+
+    let promise = new Promise((resolve, reject) => {
+        resolve([1])
+    })
+
+    let executor = executeAction(promise,  null)
+
+    executor.then(result => {
+        expect(result).toEqual(value)
+    })
+});
+
+test('When action returns Function Promise execute it ', () => {
+
+    let value = 1
+
+    let promise = new Promise((resolve, reject) => {
+        resolve(() => {
+            return value
+        })
+    })
+
+    let executor = executeAction(promise,  null)
+
+    executor.then(result => {
+        expect(result).toEqual(value)
+    })
+});
+
+test('When action returns value function execute it', () => {
     var value = 1
     
     let functor = action => {
@@ -31,7 +63,44 @@ test('When action returns function execute it', () => {
     })
 });
 
-test('When action returns generator execute it', () => {
+
+test('When action returns array function execute it', () => {
+    var value = 1
+    
+    let functor = action => {
+        return [value]
+    }
+
+    let executor = executeAction(event => {
+        return functor
+    }, null)
+
+    executor.then(result => {
+        expect(result).toEqual(value)
+    })
+});
+
+
+test('When action returns generator function execute it', () => {
+    
+    let functorB = function*(action) {
+        yield 5
+    }
+    
+    let functor = action => {
+        return functorB
+    }
+
+    let executor = executeAction(event => {
+        return functor
+    }, null)
+
+    executor.then(result => {
+        expect(result).toEqual(value)
+    })
+});
+
+test('When action returns value generator execute it', () => {
 
     let functorB = function*(action) {
         yield 5
@@ -44,7 +113,35 @@ test('When action returns generator execute it', () => {
     })
 });
 
-test('When action returns generator execute sub generator', () => {
+test('When action returns array generator execute it', () => {
+
+    let functorB = function*(action) {
+        yield [5]
+    }
+
+    let executor = executeAction(functorB, null)
+
+    executor.then(result => {
+        expect(result).toEqual(5)
+    })
+});
+
+test('When action returns function generator execute it', () => {
+
+    let functorB = function*(action) {
+        yield () => {
+            return 5
+        }
+    }
+
+    let executor = executeAction(functorB, null)
+
+    executor.then(result => {
+        expect(result).toEqual(5)
+    })
+});
+
+test('When action returns generator generator execute itr', () => {
 
     var events = []
 
