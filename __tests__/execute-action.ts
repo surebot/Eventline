@@ -101,6 +101,18 @@ test('When action returns generator function execute it', () => {
     })
 });
 
+test('Pass return new event correctly from function action', () => {
+    let value = 1
+    let executor = executeAction(event => {
+        return event + 1
+    }, value)
+
+    return executor
+    .then(result => {
+        expect(result).toEqual(2);
+    })
+});
+
 test('When action returns value generator execute it', () => {
 
     let functorB = function*(action) {
@@ -144,7 +156,7 @@ test('When action returns function generator execute it', () => {
     })
 });
 
-test('When action returns generator generator execute itr', () => {
+test('When action returns generator generator execute it', () => {
 
     var events = []
 

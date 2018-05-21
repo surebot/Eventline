@@ -305,3 +305,26 @@ test('should execute route if at least one pattern matches', () => {
     expect(actionResults).toEqual([1, 1]);
   })
 });
+
+test('should execute route and correct pass event to each step', () => {
+  let actionResults = [];
+  let eventline = new Eventline();
+  let patternA = {
+    value: 1
+  };
+
+  eventline.on(patternA)
+  .then(event => {
+    event.value += 1
+    return event
+  })
+  .then(event => {
+    event.value += 1
+    return event
+  })
+
+  return eventline.route(Object.assign({}, patternA))
+  .then(event => {
+    expect(event.value).toEqual(3);
+  })
+});
